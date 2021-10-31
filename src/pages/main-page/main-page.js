@@ -10,8 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './components/color-mode-switcher/color-mode-switcher';
 
-
-const App = () => {
+const MainPage = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('loggedUser');
@@ -24,7 +23,7 @@ const App = () => {
           <ColorModeSwitcher justifySelf="flex-end" />
           <VStack spacing={8}>
             <Text>App js</Text>
-            <Button onClick={handleLogout} >Logout</Button>
+            <Button onClick={handleLogout}>Logout</Button>
           </VStack>
         </Grid>
       </Box>
@@ -32,4 +31,4 @@ const App = () => {
   )
 }
 
-export default App;
+export default MainPage;

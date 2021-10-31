@@ -1,14 +1,31 @@
 import { ColorModeScript } from '@chakra-ui/react';
 import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
+import { store } from './redux/store';
+import { Provider } from 'react-redux';
+import { SocketProvider } from './providers/socket-providers';
+import Login from './pages/login/login';
+
+/**
+ * ! WORKARAOUND WARNING !
+ * ! Default olarak dark tema kullanılması için bu kod bloğu eklendi.
+ * @author suleyman.sevimli
+ */
+const colorMode = localStorage.getItem('chakra-ui-color-mode');
+if (!colorMode) {
+  localStorage.setItem('chakra-ui-color-mode', 'dark');
+}
 
 ReactDOM.render(
   <StrictMode>
-    <ColorModeScript />
-    <App />
+    <Provider store={store}>
+      <SocketProvider>
+        <ColorModeScript />
+        <Login />
+      </SocketProvider>
+    </Provider>
   </StrictMode>,
   document.getElementById('root')
 );
