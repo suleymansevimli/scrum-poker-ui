@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   users: [],
+  isLogin: false,
 };
 
 export const userManagementSlice = createSlice({
@@ -10,7 +11,7 @@ export const userManagementSlice = createSlice({
   reducers: {
     userInformations: (state, action) => {
       state.users.push({
-          ...action.payload
+        ...action.payload
       })
     },
   },

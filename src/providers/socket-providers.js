@@ -1,4 +1,4 @@
-import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
+import { useContext, useLayoutEffect, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import SocketContext from '../context/socket-context';
 
@@ -11,7 +11,6 @@ export const SocketProvider = ({ children, socketUri }) => {
     const [uri, setUri] = useState(socketUri)
 
     useLayoutEffect(() => {
-        console.log('tadaa !');
         socket.current = io.connect(uri ?? process.env.REACT_APP_SOCKET_URI)
         return () => socket.current.disconnect();
     }, [uri])

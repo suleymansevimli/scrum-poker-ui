@@ -1,35 +1,53 @@
 import React from 'react';
-import {
-  ChakraProvider,
-  Box,
-  VStack,
-  Grid,
-  theme,
-  Text,
-  Button
-} from '@chakra-ui/react';
-import { ColorModeSwitcher } from './components/color-mode-switcher/color-mode-switcher';
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import Login from './pages/login/login';
+import MainPage from './pages/main-page/main-page';
+import useAuth from './hooks/useAuth';
+import Room from './pages/room/room';
 
+/**
+ * Default olarak dark mode setlenmesi için bu alan eklendi.
+ * @author [suleymansevimli](https://github.com/suleymansevimli)
+ */
+const config = {
+  initialColorModeName: 'dark',
+  useSystemColorMode: false,
+};
 
-const App = () => {
+// custom tema extend edildi.
+const theme = extendTheme(config);
 
-  const handleLogout = () => {
-    localStorage.removeItem('loggedUser');
-  }
+/**
+ * Route işlemleri bu alanda yapılır.
+ * @author [suleymansevimli](https://github.com/suleymansevimli)
+ * 
+ * @returns {React.ReactElement}
+ */
+export default function App() {
+
+  // user login olup olmadığını kontrol eder.
+  const { authed } = useAuth();
 
   return (
     <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
-          <ColorModeSwitcher justifySelf="flex-end" />
-          <VStack spacing={8}>
-            <Text>App js</Text>
-            <Button onClick={handleLogout} >Logout</Button>
-          </VStack>
-        </Grid>
-      </Box>
+      <Router>
+        <Routes>
+          {
+            authed ?
+              <>
+                <Route path="/" element={<MainPage />} />
+                <Route path="/room/:roomId" element={<Room />} />
+              </>
+              : <>
+                <Route path="/" element={<Login />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/room/:roomId" element={<Room />} />
+                <Route path="*" element={<Login />} />
+              </>
+          }
+        </Routes>
+      </Router>
     </ChakraProvider>
-  )
+  );
 }
-
-export default App;

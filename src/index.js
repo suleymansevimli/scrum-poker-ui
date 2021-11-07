@@ -6,26 +6,19 @@ import * as serviceWorker from './serviceWorker';
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
 import { SocketProvider } from './providers/socket-providers';
-import Login from './pages/login/login';
-
-/**
- * ! WORKARAOUND WARNING !
- * ! Default olarak dark tema kullanılması için bu kod bloğu eklendi.
- * @author suleyman.sevimli
- */
-const colorMode = localStorage.getItem('chakra-ui-color-mode');
-if (!colorMode) {
-  localStorage.setItem('chakra-ui-color-mode', 'dark');
-}
+import App from './App';
+import { AuthProvider } from './hooks/useAuth';
 
 ReactDOM.render(
   <StrictMode>
-    <Provider store={store}>
-      <SocketProvider>
-        <ColorModeScript />
-        <Login />
-      </SocketProvider>
-    </Provider>
+    <SocketProvider>
+      <Provider store={store}>
+        <AuthProvider>
+          <ColorModeScript />
+          <App />
+        </AuthProvider>
+      </Provider>
+    </SocketProvider>
   </StrictMode>,
   document.getElementById('root')
 );
