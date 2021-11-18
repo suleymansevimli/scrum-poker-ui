@@ -2,7 +2,7 @@
  * Eventlerin enum değerleri
  * @author suleymansevimli
  */
-export const USER_MANAGEMENT_EVENT_ENUMS = {
+export const AUTH_EVENT_ENUMS = {
     CONNECT: "connect",
     GET_ALL_USERS: "getAllUsers",
     NEW_USER_JOINED: "newUserJoined",
@@ -10,5 +10,7 @@ export const USER_MANAGEMENT_EVENT_ENUMS = {
     RE_JOIN_ALREADY_LOGINED_USER: "reJoinAllreadyLoginedUser",
     USER_RE_JOINED: "userReJoined",
     SET_USER_NAME_REQUEST: "SetUserNameRequest",
-    LOGIN_REQUEST_ACCEPTED: "loginRequestAccepted"
+    LOGIN_REQUEST_ACCEPTED: "loginRequestAccepted",
+    USER_LOGOUT_REQUEST: "userLogoutRequest",
+    LOGOUT_REQUEST_ACCEPTED: "logoutRequestAccepted",
 }

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams,useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Text } from "@chakra-ui/react";
 import Layout from "../../components/layout/layout";
 import useAuth from "../../hooks/useAuth";
+import LoginForm from "../../components/auth/login/login-form/login-form";
 
 /**
  * Kişilerin scrum room'larını görüntüler.
@@ -13,12 +14,11 @@ import useAuth from "../../hooks/useAuth";
  */
 const Room = () => {
     // states
-    const [loading,setLoading] = useState(true);
-    const [message,setMessage] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [message, setMessage] = useState(null);
 
     // router
     const { roomId } = useParams();
-    const navigate = useNavigate();
 
     // hooks
     const { authed } = useAuth();
@@ -29,15 +29,8 @@ const Room = () => {
      * @author [suleymansevimli](https://github.com/suleymansevimli)
      */
     useEffect(() => {
-        if(!authed) {
-            setMessage("Login sayfasına yönlendiriliyorsunuz...");
-            /**
-             * "la noluyo" tepkisini almamak için setTimeout eklendi :) 
-             * @author [suleymansevimli](https://github.com/suleymansevimli)
-             * */ 
-            setTimeout(() => {
-                navigate("/", {state: {from: `/room/${roomId}`}});
-            },1000);
+        if (!authed) {
+            setMessage("Lütfen giriş yapınız..");
         } else {
             // login olunmuş ise loading false yapılır.
             setLoading(false);
@@ -45,14 +38,14 @@ const Room = () => {
             // mesaj kaldırılır.
             setMessage(null);
         }
-    }, [roomId,authed]);
+    }, [roomId, authed]);
 
     return (
         <Layout>
-            {loading 
-                ? <Text>Please wait</Text> 
+            {loading
+                ? <Text>{message}</Text>
                 : <h1>Room {roomId}</h1>}
-            {message && <Text>{message}</Text>}
+            {message && <LoginForm redirectTo={`/room/${roomId}`} />}
         </Layout>
     );
 }

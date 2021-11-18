@@ -27,7 +27,8 @@ const theme = extendTheme(config);
 export default function App() {
 
   // user login olup olmadığını kontrol eder.
-  const { authed } = useAuth();
+  const useAuthHook = useAuth();
+  const authed = useAuthHook?.authed;
 
   return (
     <ChakraProvider theme={theme}>

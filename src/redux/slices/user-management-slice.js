@@ -9,14 +9,16 @@ export const userManagementSlice = createSlice({
   name: 'userManagementSlice',
   initialState,
   reducers: {
-    userInformations: (state, action) => {
-      state.users.push({
-        ...action.payload
-      })
-    },
+    setAllUsers: (state, action) => {
+      if(!action.payload) {
+        state.users = []
+      } else { 
+        state.users = action.payload
+      }
+    }
   },
 });
 
-export const { userInformations } = userManagementSlice.actions;
+export const { setAllUsers } = userManagementSlice.actions;
 
 export default userManagementSlice.reducer;

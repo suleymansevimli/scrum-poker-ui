@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Box,
-    Grid,
+    Flex,
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from '../../components/color-mode-switcher/color-mode-switcher';
 import Navbar from '../navbar/navbar';
@@ -16,14 +16,26 @@ import Navbar from '../navbar/navbar';
  */
 const Layout = ({ children }) => {
     return (
-        <Box textAlign="center" fontSize="xl">
-            <Navbar />
-            <Grid minH="100vh" p={3}>
+        <Box
+            as="div"
+            display="flex"
+            alignItems="flex-start"
+            justifyContent="center"
+            flexDirection="column"
+            textAlign="center"
+            fontSize="xl"
+            height="100vh"
+        >
+            <Box as="div" w="100%">
+                <Navbar />
+            </Box>
+            
+            <Flex alignItems="center" justifyContent="center" w="100%" h="100%" p={3}>
                 <Box position="absolute" top="5" right="5">
                     <ColorModeSwitcher justifySelf="flex-end" />
                 </Box>
                 {children}
-            </Grid>
+            </Flex>
         </Box>
     )
 }

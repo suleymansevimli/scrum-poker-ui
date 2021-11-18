@@ -1,4 +1,6 @@
 import * as React from "react";
+import { AUTH_EVENT_ENUMS } from "../constants/user-management-event-enums";
+import { useSocket } from "../providers/socket-providers";
 
 const authContext = React.createContext();
 
@@ -10,12 +12,15 @@ const authContext = React.createContext();
 function useAuth() {
   const [authed, setAuthed] = React.useState(localStorage.getItem("token") ? true : false);
 
+  const { emitter } = useSocket();
+
   return {
     authed,
-    login() {
+    login(data = {}) {
       return new Promise((res) => {
-        setAuthed(true);
-        localStorage.setItem("token", "token");
+        emitter(AUTH_EVENT_ENUMS.SET_USER_NAME_REQUEST, {
+          ...data
+        })
         res();
       });
     },
@@ -23,9 +28,14 @@ function useAuth() {
       return new Promise((res) => {
         setAuthed(false);
         localStorage.removeItem("token");
+        emitter(AUTH_EVENT_ENUMS.USER_LOGOUT_REQUEST);
         res();
       });
-    }
+    },
+    setToken(token) {
+      localStorage.setItem("token", token);
+      setAuthed(true);
+    },
   };
 }
 
