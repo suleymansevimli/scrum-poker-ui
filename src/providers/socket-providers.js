@@ -44,12 +44,12 @@ export const SocketProvider = ({ children, socketUri }) => {
      * 
      * @param {String} uri 
      */
-    const changeSocketUriSource = (uri) => {
-        setUri(uri)
+    const changeSocketUriSource = (uri, isOutSource) => {
+        setUri(isOutSource ? uri : `${process.env.REACT_APP_SOCKET_URI}/${uri}` )
     }
 
     return (
-        <SocketContext.Provider value={{ socket: socket.current, listener, emitter, changeSocketUriSource }}>
+        <SocketContext.Provider value={{ socket: socket.current, listener, emitter, changeSocketUriSource, uri }}>
             {children}
         </SocketContext.Provider>
     )

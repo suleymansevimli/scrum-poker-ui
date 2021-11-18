@@ -11,8 +11,11 @@ const authContext = React.createContext();
  */
 function useAuth() {
   const [authed, setAuthed] = React.useState(localStorage.getItem("token") ? true : false);
+  const { emitter, changeSocketUriSource, uri } = useSocket();
 
-  const { emitter } = useSocket();
+  React.useLayoutEffect(() => {
+      changeSocketUriSource('auth');
+  },[changeSocketUriSource])
 
   return {
     authed,

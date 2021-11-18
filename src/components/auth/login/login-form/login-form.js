@@ -1,38 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Button } from '@chakra-ui/button';
 import { VStack, Input } from '@chakra-ui/react';
 import { useSocket } from '../../../../providers/socket-providers';
-import { AUTH_EVENT_ENUMS } from '../../../../constants/user-management-event-enums';
 import useAuth from '../../../../hooks/useAuth'
-import { useDispatch } from 'react-redux';
-import { setAllUsers } from '../../../../redux/slices/user-management-slice';
 
 const LoginForm = ({ redirectTo }) => {
+    
+    // socket
+    const { changeSocketUriSource } = useSocket();
+
+    useLayoutEffect(() => {
+        changeSocketUriSource('auth');
+    },[changeSocketUriSource])
 
     // state
     const [userName, setUserName] = useState('');
 
     // hooks
     const navigate = useNavigate();
-    const { login, setToken } = useAuth();
+    const { login } = useAuth();
     const { state } = useLocation();
-
-    // socket
-    const { listener } = useSocket();
-
-    // redux
-    const dispatch = useDispatch();
-
-    // functions
-    useEffect(() => {
-        listener(AUTH_EVENT_ENUMS.LOGIN_REQUEST_ACCEPTED, (data) => {
-            setToken(data.uniqueId);
-        });
-        listener(AUTH_EVENT_ENUMS.GET_ALL_USERS, (allUsers) => {
-            dispatch(setAllUsers(allUsers));
-        })
-    }, [listener]);
 
     /**
      * Login function
