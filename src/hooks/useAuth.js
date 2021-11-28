@@ -2,7 +2,7 @@ import * as React from "react";
 import { AUTH_EVENT_ENUMS } from "../constants/user-management-event-enums";
 import { useSocket } from "../providers/socket-providers";
 
-const authContext = React.createContext();
+export const authContext = React.createContext();
 
 /**
  * Auth Context
@@ -11,11 +11,11 @@ const authContext = React.createContext();
  */
 function useAuth() {
   const [authed, setAuthed] = React.useState(localStorage.getItem("token") ? true : false);
-  const { emitter, changeSocketUriSource, uri } = useSocket();
+  const { emitter, changeSocketUriSource } = useSocket();
 
   React.useLayoutEffect(() => {
       changeSocketUriSource('auth');
-  },[changeSocketUriSource])
+  },[changeSocketUriSource]);
 
   return {
     authed,
@@ -55,8 +55,4 @@ export function AuthProvider({ children }) {
       {children}
     </authContext.Provider>
   );
-}
-
-export default function AuthConsumer() {
-  return React.useContext(authContext);
 }

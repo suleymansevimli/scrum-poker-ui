@@ -1,9 +1,9 @@
-import { useLayoutEffect, useState } from 'react';
+import { useContext, useLayoutEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Button } from '@chakra-ui/button';
 import { VStack, Input } from '@chakra-ui/react';
 import { useSocket } from '../../../../providers/socket-providers';
-import useAuth from '../../../../hooks/useAuth'
+import { authContext } from '../../../../hooks/useAuth'
 
 const LoginForm = ({ redirectTo }) => {
     
@@ -19,7 +19,8 @@ const LoginForm = ({ redirectTo }) => {
 
     // hooks
     const navigate = useNavigate();
-    const { login } = useAuth();
+
+    const { login } = useContext(authContext);
     const { state } = useLocation();
 
     /**

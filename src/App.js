@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import Login from './pages/login/login';
 import MainPage from './pages/main-page/main-page';
-import useAuth from './hooks/useAuth';
+import { authContext } from './hooks/useAuth';
 import Room from './pages/room/room';
 import { useSocket } from './providers/socket-providers';
 import AuthSocketWrapper from './wrappers/auth-socket-wrapper';
@@ -29,34 +29,27 @@ const theme = extendTheme(config);
  */
 export default function App() {
 
-  // user login olup olmadığını kontrol eder.
-  const useAuthHook = useAuth();
-  const authed = useAuthHook?.authed;
-  const setToken = useAuthHook?.setToken;
-
-  const socket = useSocket();
-  const listener = socket?.listener;
-  const uri = socket?.uri;
+  const { authed, setToken } = useContext(authContext);
+  const { listener, uri, emitter } = useSocket();
 
   // redux
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if(listener) {
+    if (listener) {
       switch (uri) {
-        case `${process.env.REACT_APP_SOCKET_URI}/auth`: 
-          return AuthSocketWrapper({uri, listener, setToken, dispatch});
-          // return <AuthSocketWrapper uri={uri} listener={listener} setToken={setToken} dispatch={dispatch}/>;
-  
+        case `${process.env.REACT_APP_SOCKET_URI}/auth`:
+          return AuthSocketWrapper({ uri, listener, setToken, dispatch, emitter });
+
         case `${process.env.REACT_APP_SOCKET_URI}/room`:
-          // TODO: RoomSocketWrapper eklenecek.
-  
+        // TODO: RoomSocketWrapper eklenecek.
+
         default:
           break;
       }
     }
-    
-  },[listener, setToken, uri]);
+
+  }, [listener, setToken, uri]);
 
   return (
     <ChakraProvider theme={theme}>
@@ -68,7 +61,8 @@ export default function App() {
                 <Route path="/" element={<MainPage />} />
                 <Route path="/room/:roomId" element={<Room />} />
               </>
-              : <>
+              : 
+              <>
                 <Route path="/" element={<Login />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/room/:roomId" element={<Room />} />

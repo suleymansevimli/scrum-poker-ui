@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import useAuth from '../../hooks/useAuth';
-import { useSocket } from '../../providers/socket-providers';
-import { AUTH_EVENT_ENUMS } from '../../constants/user-management-event-enums';
-import { Flex, Box, Text } from "@chakra-ui/react"
+import { authContext } from '../../hooks/useAuth';
+import { Flex, Box, Text } from "@chakra-ui/react";
+import { useSelector } from 'react-redux';
 import './navbar.css';
 
 /**
@@ -15,15 +14,14 @@ import './navbar.css';
 const Navbar = () => {
 
     // hooks
-    const { authed, logout } = useAuth();
-    const navigate = useNavigate();
-    const { listener } = useSocket();
+    const { authed, logout } = useContext(authContext);
 
-    useEffect(() => {
-        listener(AUTH_EVENT_ENUMS.LOGOUT_REQUEST_ACCEPTED, (data) => {
-            console.log('loggedOutedUser', data);
-        })
-    }, [listener])
+    // route
+    const navigate = useNavigate();
+
+    // redux
+    const { loginedUser } = useSelector(state => state.userManagementSlice);
+    const { userName } = loginedUser;
 
     /**
      * Logout function
@@ -38,8 +36,7 @@ const Navbar = () => {
         <Flex as="div" w="100%" justifyContent="space-around">
             <Box p="4">
                 {
-                    authed
-                        ?
+                    authed ?
                         (
                             <Flex alignItems="center" gridGap="8">
                                 <Box>
@@ -69,7 +66,7 @@ const Navbar = () => {
                 }
             </Box>
             <Box p="4">
-                {authed ? 'Giriş Yapmış Kullanıcı adı' : null}
+                {authed ? userName : null}
             </Box>
         </Flex>
     );

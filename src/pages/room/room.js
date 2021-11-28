@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Text } from "@chakra-ui/react";
 import Layout from "../../components/layout/layout";
-import useAuth from "../../hooks/useAuth";
 import LoginForm from "../../components/auth/login/login-form/login-form";
+import { authContext } from "../../hooks/useAuth";
 
 /**
  * Kişilerin scrum room'larını görüntüler.
@@ -21,7 +21,7 @@ const Room = () => {
     const { roomId } = useParams();
 
     // hooks
-    const { authed } = useAuth();
+    const { authed } = useContext(authContext);
 
     /**
      * Room'a giriş yapıldığında burası çalışır.

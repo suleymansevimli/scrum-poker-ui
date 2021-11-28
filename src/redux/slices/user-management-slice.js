@@ -2,23 +2,47 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   users: [],
-  isLogin: false,
+  loginedUser: {},
+  isRoomCreating: false,
+  rooms: [],
+  joinedRoom: {},
 };
 
 export const userManagementSlice = createSlice({
   name: 'userManagementSlice',
   initialState,
   reducers: {
+
     setAllUsers: (state, action) => {
       if(!action.payload) {
         state.users = []
       } else { 
         state.users = action.payload
       }
+    },
+
+    setSelfUserInfo: (state, action) => { 
+      state.loginedUser = action.payload;
+    },
+
+    setAllRooms: (state, action) => {
+      if(!action.payload) {
+        state.rooms = []
+      } else { 
+        state.rooms = action.payload
+      }
+    },
+
+    setIsRoomCreating: (state, action) => {
+      state.isRoomCreating = action.payload;
+    },
+
+    setJoinedRoom: (state, action) => {
+      state.joinedRoom = action.payload;
     }
   },
 });
 
-export const { setAllUsers } = userManagementSlice.actions;
+export const { setAllUsers, setSelfUserInfo, setIsRoomCreating, setJoinedRoom } = userManagementSlice.actions;
 
 export default userManagementSlice.reducer;
