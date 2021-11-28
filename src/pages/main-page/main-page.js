@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Center, Button, Box, VStack } from '@chakra-ui/react';
 import Layout from '../../components/layout/layout';
 import { Input } from '@chakra-ui/react';
@@ -6,7 +6,6 @@ import { AUTH_EVENT_ENUMS } from '../../constants/user-management-event-enums';
 import { useSocket } from '../../providers/socket-providers';
 import { setIsRoomCreating } from '../../redux/slices/user-management-slice';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
 
 /**
  * Ana sayfa componenti
@@ -25,7 +24,7 @@ const MainPage = () => {
 
   // redux 
   const dispatch = useDispatch();
-  const { isRoomCreating, joinedRoom } = useSelector(state => state.userManagementSlice);
+  const { joinedRoom } = useSelector(state => state.userManagementSlice);
 
   // functions
 

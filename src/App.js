@@ -43,13 +43,14 @@ export default function App() {
 
         case `${process.env.REACT_APP_SOCKET_URI}/room`:
         // TODO: RoomSocketWrapper eklenecek.
+        break;
 
         default:
-          break;
+          return;
       }
     }
 
-  }, [listener, setToken, uri]);
+  }, [listener, setToken, uri, dispatch, emitter]);
 
   return (
     <ChakraProvider theme={theme}>
