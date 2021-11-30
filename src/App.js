@@ -1,13 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import Login from './pages/login/login';
 import MainPage from './pages/main-page/main-page';
 import { authContext } from './hooks/useAuth';
 import Room from './pages/room/room';
-import { useSocket } from './providers/socket-providers';
-import AuthSocketWrapper from './wrappers/auth-socket-wrapper';
-import { useDispatch } from 'react-redux';
 
 /**
  * Default olarak dark mode setlenmesi için bu alan eklendi.
@@ -29,28 +26,7 @@ const theme = extendTheme(config);
  */
 export default function App() {
 
-  const { authed, setToken } = useContext(authContext);
-  const { listener, uri, emitter } = useSocket();
-
-  // redux
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (listener) {
-      switch (uri) {
-        case `${process.env.REACT_APP_SOCKET_URI}/auth`:
-          return AuthSocketWrapper({ uri, listener, setToken, dispatch, emitter });
-
-        case `${process.env.REACT_APP_SOCKET_URI}/room`:
-        // TODO: RoomSocketWrapper eklenecek.
-        break;
-
-        default:
-          return;
-      }
-    }
-
-  }, [listener, setToken, uri, dispatch, emitter]);
+  const { authed } = useContext(authContext);
 
   return (
     <ChakraProvider theme={theme}>

@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 const MainPage = () => {
 
   // socket
-  const { emitter } = useSocket();
+  // const { emitter } = useSocket();
 
   // states
   const [roomName, setRoomName] = React.useState('');
@@ -32,7 +32,7 @@ const MainPage = () => {
    * Room oluşturma işlemini başlatır.
    */
   const joinRoom = () => {
-    emitter(AUTH_EVENT_ENUMS.NEW_ROOM_CREATE_REQUEST, { roomName });
+    // emitter(AUTH_EVENT_ENUMS.NEW_ROOM_CREATE_REQUEST, { roomName });
     dispatch(setIsRoomCreating(true));
   };
 

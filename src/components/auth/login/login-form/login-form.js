@@ -8,11 +8,11 @@ import { authContext } from '../../../../hooks/useAuth'
 const LoginForm = ({ redirectTo }) => {
     
     // socket
-    const { changeSocketUriSource } = useSocket();
+    // const { changeSocketUriSource } = useSocket();
 
-    useLayoutEffect(() => {
-        changeSocketUriSource('auth');
-    },[changeSocketUriSource])
+    // useLayoutEffect(() => {
+    //     changeSocketUriSource('auth');
+    // },[changeSocketUriSource])
 
     // state
     const [userName, setUserName] = useState('');

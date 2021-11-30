@@ -3,6 +3,10 @@ import { setAllUsers, setIsRoomCreating, setJoinedRoom, setSelfUserInfo } from "
 
 export default function AuthSocketWrapper({ listener, emitter, setToken, dispatch }) {
 
+    // listener("testEvent",(data)=> {
+    //     console.log("***-testEvent",data);
+    // })
+
     /**
      * On user connection to socket
      */

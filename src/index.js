@@ -8,6 +8,8 @@ import { Provider } from 'react-redux';
 import { SocketProvider } from './providers/socket-providers';
 import App from './App';
 import { AuthProvider } from './hooks/useAuth';
+import PlanningSocketWrapper from './wrappers/planning-socket-wrapper';
+import ExampleWrapper from './wrappers/ExampleWrapper';
 
 ReactDOM.render(
   <StrictMode>
@@ -15,6 +17,8 @@ ReactDOM.render(
       <Provider store={store}>
         <AuthProvider>
           <ColorModeScript />
+          <PlanningSocketWrapper />
+          <ExampleWrapper />
           <App />
         </AuthProvider>
       </Provider>
