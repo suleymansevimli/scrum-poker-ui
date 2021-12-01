@@ -10,10 +10,10 @@ export const SocketProvider = ({ children, socketUri }) => {
     const socket = useRef(null);
     const [uri, setUri] = useState(socketUri)
 
-    useLayoutEffect(() => {
-        socket.current = io.connect(uri ?? process.env.REACT_APP_SOCKET_URI)
-        return () => socket.current.disconnect();
-    }, [uri])
+    // useLayoutEffect(() => {
+    //     socket.current = io.connect(uri ?? process.env.REACT_APP_SOCKET_URI)
+    //     return () => socket.current.disconnect();
+    // }, [uri])
 
     /**
      * Listener

@@ -17,8 +17,8 @@ ReactDOM.render(
       <Provider store={store}>
         <AuthProvider>
           <ColorModeScript />
-          <PlanningSocketWrapper />
           <ExampleWrapper />
+          <PlanningSocketWrapper />
           <App />
         </AuthProvider>
       </Provider>
