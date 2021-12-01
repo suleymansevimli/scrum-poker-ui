@@ -2,8 +2,6 @@ import React from 'react';
 import { Center, Button, Box, VStack } from '@chakra-ui/react';
 import Layout from '../../components/layout/layout';
 import { Input } from '@chakra-ui/react';
-import { AUTH_EVENT_ENUMS } from '../../constants/user-management-event-enums';
-import { useSocket } from '../../providers/socket-providers';
 import { setIsRoomCreating } from '../../redux/slices/user-management-slice';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,9 +14,6 @@ import { useDispatch, useSelector } from 'react-redux';
  */
 const MainPage = () => {
 
-  // socket
-  // const { emitter } = useSocket();
-
   // states
   const [roomName, setRoomName] = React.useState('');
 
@@ -26,13 +21,10 @@ const MainPage = () => {
   const dispatch = useDispatch();
   const { joinedRoom } = useSelector(state => state.userManagementSlice);
 
-  // functions
-
   /**
    * Room oluşturma işlemini başlatır.
    */
   const joinRoom = () => {
-    // emitter(AUTH_EVENT_ENUMS.NEW_ROOM_CREATE_REQUEST, { roomName });
     dispatch(setIsRoomCreating(true));
   };
 

@@ -1,19 +1,12 @@
-import { useContext, useLayoutEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Button } from '@chakra-ui/button';
 import { VStack, Input } from '@chakra-ui/react';
-import { useSocket } from '../../../../providers/socket-providers';
 import { authContext } from '../../../../hooks/useAuth'
+import { loginRequest } from '../../../../wrappers/auth/auth-emitter';
 
 const LoginForm = ({ redirectTo }) => {
     
-    // socket
-    // const { changeSocketUriSource } = useSocket();
-
-    // useLayoutEffect(() => {
-    //     changeSocketUriSource('auth');
-    // },[changeSocketUriSource])
-
     // state
     const [userName, setUserName] = useState('');
 
@@ -28,9 +21,7 @@ const LoginForm = ({ redirectTo }) => {
      * @author [suleymansevimli](https://github.com/suleymansevimli)
      */
     const handleLogin = () => {
-        login({ userName }).then(() => {
-            navigate(redirectTo || state?.from || "/");
-        });
+        loginRequest(userName)
     };
 
     return (

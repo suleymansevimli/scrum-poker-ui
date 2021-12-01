@@ -1,8 +1,9 @@
 /**
  * Eventlerin enum değerleri
- * @author suleymansevimli
+ * 
+ * @author [suleymansevimli](https://github.com/suleymansevimli)
  */
-export const AUTH_EVENT_ENUMS = {
+ export const AUTH_EVENT_ENUMS = {
     CONNECT: "connect",
     USER_CONNECTED: "userConnected",
     GET_ALL_USERS: "getAllUsers",

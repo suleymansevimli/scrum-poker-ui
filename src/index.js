@@ -5,24 +5,19 @@ import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
-import { SocketProvider } from './providers/socket-providers';
 import App from './App';
 import { AuthProvider } from './hooks/useAuth';
-import PlanningSocketWrapper from './wrappers/planning-socket-wrapper';
-import ExampleWrapper from './wrappers/ExampleWrapper';
+import MainWrapper from './wrappers/main-wrapper';
 
 ReactDOM.render(
   <StrictMode>
-    <SocketProvider>
-      <Provider store={store}>
-        <AuthProvider>
-          <ColorModeScript />
-          <ExampleWrapper />
-          <PlanningSocketWrapper />
-          <App />
-        </AuthProvider>
-      </Provider>
-    </SocketProvider>
+    <Provider store={store}>
+      <AuthProvider>
+        <MainWrapper />
+        <ColorModeScript />
+        <App />
+      </AuthProvider>
+    </Provider>
   </StrictMode>,
   document.getElementById('root')
 );
