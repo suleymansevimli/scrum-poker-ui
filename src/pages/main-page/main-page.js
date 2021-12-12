@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Center, Button, Box, VStack } from '@chakra-ui/react';
 import Layout from '../../components/layout/layout';
 import { Input } from '@chakra-ui/react';
 import { setIsRoomCreating } from '../../redux/slices/user-management-slice';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { createTask } from '../../wrappers/planning/planning-emitter';
 
 /**
  * Ana sayfa componenti
@@ -17,6 +19,9 @@ const MainPage = () => {
   // states
   const [roomName, setRoomName] = React.useState('');
 
+  // router
+  const navigate = useNavigate()
+
   // redux 
   const dispatch = useDispatch();
   const { joinedRoom } = useSelector(state => state.userManagementSlice);
@@ -27,6 +32,19 @@ const MainPage = () => {
   const joinRoom = () => {
     dispatch(setIsRoomCreating(true));
   };
+
+  /**
+   * Kullanıcı sadece bir tane room'a kayıtlı olabilir.
+   * Bu yüzden, kullanıcı bir room'a giriş yapmış ise,
+   * direkt o room'a gidecek.
+   * 
+   * @author [suleymansevimli](https://github.com/suleymansevimli)
+   */
+  useEffect(() => {
+    if (joinedRoom.roomName) {
+      navigate(`/room/${joinedRoom.roomName}`);
+    }
+  }, [joinedRoom]);
 
   return (
     <Layout>

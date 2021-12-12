@@ -1,10 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import * as socket from 'socket.io-client';
 import PlanningSocketListener from "./planning-listener";
-
-// socket initialization
-export const planningSocket = socket.io(`${process.env.REACT_APP_SOCKET_URI}/planning`);
+import { planningSocket } from "../socket-connections";
 
 /**
  * ### PlanningSocketWrapper
@@ -22,7 +19,7 @@ const PlanningSocketWrapper = () => {
             PlanningSocketListener({ dispatch })
         }
 
-        return () => planningSocket.disconnect();
+        return () => planningSocket.close();
     }, [])
 
 

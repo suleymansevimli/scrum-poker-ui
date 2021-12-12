@@ -1,4 +1,4 @@
-import { planningSocket } from "./planning-socket-wrapper";
+import { planningSocket } from "../socket-connections"; 
 
 /**
  * Planning Socket Listener
@@ -17,6 +17,10 @@ const PlanningSocketListener = ({ dispatch }) => {
      */
     planningSocket.on('getAllTasks', data => {
         console.log('***-getAllTasks', data,'/planning')
+    });
+
+    planningSocket.on('craete-task-request-accepted', data => {
+        console.log('***-create-task-request-accepted', data,'/planning')
     });
 }
 

@@ -5,7 +5,7 @@ import { VStack, Input } from '@chakra-ui/react';
 import { authContext } from '../../../../hooks/useAuth'
 import { loginRequest } from '../../../../wrappers/auth/auth-emitter';
 
-const LoginForm = ({ redirectTo }) => {
+const LoginForm = () => {
     
     // state
     const [userName, setUserName] = useState('');

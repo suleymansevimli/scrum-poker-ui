@@ -1,4 +1,5 @@
 import * as React from "react";
+import { logoutRequest } from "../wrappers/auth/auth-emitter";
 
 /**
  * Auth Context
@@ -18,11 +19,12 @@ function useAuth() {
   return {
     authed,
     login(data = {}) {
-      localStorage.setItem("token", "data.token");
+      localStorage.setItem("token", data.token);
       setAuthed(true);
     },
     logout() {
       return new Promise((res) => {
+        logoutRequest()
         setAuthed(false);
         localStorage.removeItem("token");
         res();

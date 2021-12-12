@@ -14,21 +14,21 @@ export const userManagementSlice = createSlice({
   reducers: {
 
     setAllUsers: (state, action) => {
-      if(!action.payload) {
+      if (!action.payload) {
         state.users = []
-      } else { 
+      } else {
         state.users = action.payload
       }
     },
 
-    setSelfUserInfo: (state, action) => { 
+    setSelfUserInfo: (state, action) => {
       state.loginedUser = action.payload;
     },
 
     setAllRooms: (state, action) => {
-      if(!action.payload) {
+      if (!action.payload) {
         state.rooms = []
-      } else { 
+      } else {
         state.rooms = action.payload
       }
     },
@@ -39,10 +39,18 @@ export const userManagementSlice = createSlice({
 
     setJoinedRoom: (state, action) => {
       state.joinedRoom = action.payload;
+    },
+
+    setAllRooms: (state, action) => {
+      if (!action.payload) {
+        state.rooms = []
+      } else {
+        state.rooms = action.payload
+      }
     }
   },
 });
 
-export const { setAllUsers, setSelfUserInfo, setIsRoomCreating, setJoinedRoom } = userManagementSlice.actions;
+export const { setAllUsers, setSelfUserInfo, setIsRoomCreating, setJoinedRoom, setAllRooms } = userManagementSlice.actions;
 
 export default userManagementSlice.reducer;

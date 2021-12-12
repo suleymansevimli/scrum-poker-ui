@@ -1,7 +1,7 @@
 import { AUTH_EVENT_ENUMS } from "./auth-enums";
 import { setAllUsers, setIsRoomCreating, setJoinedRoom, setSelfUserInfo } from "../../redux/slices/user-management-slice";
 import { getReJoinAlreadyLoginedUser } from "./auth-emitter";
-import { authSocket } from "./auth-socket-wrapper";
+import { authSocket } from "../socket-connections"; 
 
 /**
  * Auth Socket Listener

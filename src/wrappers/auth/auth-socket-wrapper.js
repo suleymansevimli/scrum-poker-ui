@@ -1,11 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import * as socket from 'socket.io-client';
 import { authContext } from '../../hooks/useAuth';
 import AuthSocketListener from './auth-listener';
-
-// socket initialize
-export const authSocket = socket.io(`${process.env.REACT_APP_SOCKET_URI}/auth`)
+import { authSocket } from '../socket-connections';
 
 /**
  * Auth Socket Wrapper
@@ -22,7 +19,7 @@ const AuthSocketWrapper = () => {
             AuthSocketListener({ dispatch, useAuth });
         }
 
-        return () => authSocket.disconnect();
+        return () => authSocket.close();
     }, []);
 
     return <></>;

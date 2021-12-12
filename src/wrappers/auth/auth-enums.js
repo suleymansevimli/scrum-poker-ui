@@ -16,6 +16,8 @@
     LOGIN_REQUEST_ACCEPTED: "loginRequestAccepted",
     USER_LOGOUT_REQUEST: "userLogoutRequest",
     LOGOUT_REQUEST_ACCEPTED: "logoutRequestAccepted",
+
+    GET_ALL_ROOMS: "getAllRooms",
     NEW_ROOM_CREATE_REQUEST: "newRoomCreateRequest",
     NEW_ROOM_CREATE_ACCEPTED: "newRoomCreateAccepted",
     NEW_ROOM_CREATE_REJECTED: "newRoomCreateRejected",
