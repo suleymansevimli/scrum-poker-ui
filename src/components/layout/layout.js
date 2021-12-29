@@ -14,23 +14,20 @@ import Navbar from '../navbar/navbar';
  * @param {Node|Function} children Wrapped Component 
  * @returns {JSX.Element}
  */
-const Layout = ({ children }) => {
+const Layout = ({ children, layoutStyles={} }) => {
     return (
         <Box
             as="div"
-            display="flex"
-            alignItems="flex-start"
-            justifyContent="center"
-            flexDirection="column"
             textAlign="center"
             fontSize="xl"
             height="100vh"
+            {...layoutStyles}
         >
             <Box as="div" w="100%">
                 <Navbar />
             </Box>
             
-            <Flex alignItems="center" justifyContent="center" w="100%" h="100%" p={3}>
+            <Flex p={3}>
                 <Box position="absolute" top="5" right="5">
                     <ColorModeSwitcher justifySelf="flex-end" />
                 </Box>

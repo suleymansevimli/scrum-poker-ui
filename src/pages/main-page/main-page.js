@@ -5,7 +5,7 @@ import { Input } from '@chakra-ui/react';
 import { setIsRoomCreating } from '../../redux/slices/user-management-slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { createTask } from '../../wrappers/planning/planning-emitter';
+import { createNewRoom } from '../../wrappers/auth/auth-emitter';
 
 /**
  * Ana sayfa componenti
@@ -31,6 +31,7 @@ const MainPage = () => {
    */
   const joinRoom = () => {
     dispatch(setIsRoomCreating(true));
+    createNewRoom(roomName);
   };
 
   /**
@@ -47,7 +48,7 @@ const MainPage = () => {
   }, [joinedRoom]);
 
   return (
-    <Layout>
+    <Layout layoutStyle={{display:'flex', alignItems: 'center',justifyContent:'center', w:'100%', h:'100%'}}>
       <Center as="div" display="flex" flexDirection="column" gridGap="4">
         <VStack>
           {Object.keys(joinedRoom).length > 0 &&

@@ -5,6 +5,7 @@ import Login from './pages/login/login';
 import MainPage from './pages/main-page/main-page';
 import { authContext } from './hooks/useAuth';
 import Room from './pages/room/room';
+import './app.css';
 
 /**
  * Default olarak dark mode setlenmesi için bu alan eklendi.
