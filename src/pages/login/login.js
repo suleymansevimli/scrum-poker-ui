@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import LoginForm from '../../components/auth/login/login-form/login-form';
 import Layout from '../../components/layout/layout';
 
@@ -11,8 +12,10 @@ import Layout from '../../components/layout/layout';
 const Login = () => {
 
   return (
-    <Layout>
-      <LoginForm />
+    <Layout layoutStyles={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+      <Box display={'flex'} alignItems={'center'} justifyContent={'center'} width={"100%"}>
+        <LoginForm />
+      </Box>
     </Layout>
   );
 };

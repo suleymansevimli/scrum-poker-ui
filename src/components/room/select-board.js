@@ -10,7 +10,7 @@ const SelectBoard = () => {
     return (
         <Grid
             gridGap={15}
-            gridTemplateColumns={"auto auto auto auto"} >
+            gridTemplateColumns={"auto auto auto auto auto"} >
             {
                 projectConfig.cardNumbers.map(cardNumber => (
                     <GridItem>

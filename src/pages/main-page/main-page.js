@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Center, Button, Box, VStack } from '@chakra-ui/react';
+import { Button, Box } from '@chakra-ui/react';
 import Layout from '../../components/layout/layout';
 import { Input } from '@chakra-ui/react';
 import { setIsRoomCreating } from '../../redux/slices/user-management-slice';
@@ -48,22 +48,19 @@ const MainPage = () => {
   }, [joinedRoom]);
 
   return (
-    <Layout layoutStyle={{display:'flex', alignItems: 'center',justifyContent:'center', w:'100%', h:'100%'}}>
-      <Center as="div" display="flex" flexDirection="column" gridGap="4">
-        <VStack>
-          {Object.keys(joinedRoom).length > 0 &&
-            (
-              <Box>
-                {joinedRoom.roomName}
-              </Box>
-            )
-          }
-        </VStack>
-        <Box as="div" gridGap="4" display="flex" flexDirection="column">
+    <Layout layoutStyles={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+      <Box display={'flex'} alignItems={'center'} justifyContent={'center'} width={"100%"} height={"100%"}>
+        <Box
+          gridGap="4"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent={'center'}
+          height={"100%"} >
           <Input placeholder="Room Name" value={roomName} onChange={e => setRoomName(e.target.value)} />
           <Button onClick={joinRoom}>Katıl</Button>
         </Box>
-      </Center>
+      </Box>
     </Layout>
   )
 }
