@@ -39,14 +39,6 @@ export const userManagementSlice = createSlice({
 
     setJoinedRoom: (state, action) => {
       state.joinedRoom = action.payload;
-    },
-
-    setAllRooms: (state, action) => {
-      if (!action.payload) {
-        state.rooms = []
-      } else {
-        state.rooms = action.payload
-      }
     }
   },
 });

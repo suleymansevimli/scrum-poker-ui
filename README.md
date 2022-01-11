@@ -2,6 +2,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
+# Use [localtunnel](https://github.com/localtunnel/localtunnel) 
+Ex: `lt --port 3000`
+
+<br/>
 In the project directory, you can run:
 
 ### `yarn start`

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Box, Flex, Badge, Text, Tooltip} from "@chakra-ui/react";
 import PropTypes from 'prop-types';
 
@@ -24,7 +25,7 @@ const UserCard = ({ user={}, point }) => {
     )
 }
 
-export default UserCard;
+export default memo(UserCard);
 
 UserCard.propTypes = {
     user: PropTypes.object,

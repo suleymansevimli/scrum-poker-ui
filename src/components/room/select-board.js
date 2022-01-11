@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Grid, GridItem } from "@chakra-ui/react";
 import { projectConfig } from "../../config";
 import ScrumPokerCard from "../../components/room/scrum-poker-card";
@@ -12,10 +12,9 @@ const SelectBoard = () => {
             gridGap={15}
             gridTemplateColumns={"auto auto auto auto auto"} >
             {
-                projectConfig.cardNumbers.map(cardNumber => (
-                    <GridItem>
-                        <ScrumPokerCard
-                            key={cardNumber}
+                projectConfig.cardNumbers.map((cardNumber,i) => (
+                    <GridItem key={cardNumber+i}>
+                        <ScrumPokerCard 
                             onSelected={setSelectedNumber}
                             cardNumber={cardNumber}
                             isSelected={selectedNumber === cardNumber} />
@@ -26,4 +25,4 @@ const SelectBoard = () => {
     )
 }
 
-export default SelectBoard;
+export default memo(SelectBoard);

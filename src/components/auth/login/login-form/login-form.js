@@ -1,20 +1,12 @@
-import { useContext, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useState } from 'react';
 import { Button } from '@chakra-ui/button';
 import { VStack, Input } from '@chakra-ui/react';
-import { authContext } from '../../../../hooks/useAuth'
 import { loginRequest } from '../../../../wrappers/auth/auth-emitter';
 
 const LoginForm = () => {
     
     // state
     const [userName, setUserName] = useState('');
-
-    // hooks
-    const navigate = useNavigate();
-
-    const { login } = useContext(authContext);
-    const { state } = useLocation();
 
     /**
      * Login function

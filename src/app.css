@@ -1,1 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap');
+
+/* ------------------------------------------>   CUSTOM SCROLLBAR   <-------------------------------------------- */
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 8px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 8px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+/* <------------------------------------------>   CUSTOM SCROLLBAR   <--------------------------------------------> */
