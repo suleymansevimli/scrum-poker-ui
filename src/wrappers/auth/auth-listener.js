@@ -1,5 +1,5 @@
 import { AUTH_EVENT_ENUMS } from "./auth-enums";
-import { setAllUsers, setIsRoomCreating, setJoinedRoom, setSelfUserInfo } from "../../redux/slices/user-management-slice";
+import { setAllRooms, setAllUsers, setIsJoiningRoom, setIsRoomCreating, setJoinedRoom, setSelfUserInfo, updateRoomList } from "../../redux/slices/user-management-slice";
 import { getReJoinAlreadyLoginedUser } from "./auth-emitter";
 import { authSocket } from "../socket-connections"; 
 
@@ -99,6 +99,47 @@ const AuthSocketListener = ({ dispatch, useAuth }) => {
             alert(message);
         }
     });
+
+    /**
+     * Set All Rooms
+     * 
+     * @author [suleymansevimli](https://github.com/suleymansevimli)
+     */
+     authSocket.on(AUTH_EVENT_ENUMS.GET_ALL_ROOMS, rooms => {
+        dispatch(setAllRooms(rooms));
+    });
+
+    /**
+     * Updated All Rooms
+     * 
+     * @author [suleymansevimli](https://github.com/suleymansevimli)
+     */
+    authSocket.on(AUTH_EVENT_ENUMS.UPDATED_ALL_ROOMS, rooms => {
+        dispatch(updateRoomList(rooms));
+    });
+
+    /**
+     * Room Join Request Accepted
+     * 
+     * @author [suleymansevimli](https://github.com/suleymansevimli)
+     */
+     authSocket.on(AUTH_EVENT_ENUMS.ROOM_JOIN_ACCEPTED, room => {
+        dispatch(setJoinedRoom(room));
+    });
+
+    /**
+     * Room join request rejected
+     * 
+     * @author [suleymansevimli](https://github.com/suleymansevimli)
+     */
+     authSocket.on(AUTH_EVENT_ENUMS.ROOM_JOIN_REJECTED, ({reason, message}) => {
+        dispatch(setIsJoiningRoom(false));
+
+        if (reason === "NOT_FOUND") {
+            alert(message);
+        }
+    });
+
 }
 
 export default AuthSocketListener;

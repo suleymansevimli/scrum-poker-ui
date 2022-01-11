@@ -1,5 +1,5 @@
 import { AUTH_EVENT_ENUMS } from "./auth-enums";
-import { authSocket } from "../socket-connections"; 
+import { authSocket } from "../socket-connections";
 
 /**
  * ### UserName Emitter
@@ -21,7 +21,7 @@ export const loginRequest = (userName) => {
  * 
  * @author [suleymansevimli](https://github.com/suleymansevimli)
  */
-export const getReJoinAlreadyLoginedUser = ({uniqueId}) => {
+export const getReJoinAlreadyLoginedUser = ({ uniqueId }) => {
     return authSocket.emit(AUTH_EVENT_ENUMS.GET_RE_JOIN_ALREADY_LOGINED_USER, { uniqueId });
 }
 
@@ -44,5 +44,18 @@ export const logoutRequest = () => {
  * @author [suleymansevimli](https://github.com/suleymansevimli)
  */
 export const createNewRoom = (roomName) => {
-    return authSocket.emit(AUTH_EVENT_ENUMS.NEW_ROOM_CREATE_REQUEST, {roomName});
+    return authSocket.emit(AUTH_EVENT_ENUMS.NEW_ROOM_CREATE_REQUEST, { roomName });
+}
+
+/**
+ * ### Join Room Request
+ * 
+ * @param {String} roomSlug 
+ * 
+ * @returns Socket Emitter
+ * 
+ * @author [suleymansevimli](https://github.com/suleymansevimli)
+ */
+export const joinRoomRequest = (roomSlug) => {
+    return authSocket.emit(AUTH_EVENT_ENUMS.ROOM_JOIN_REQUEST, { slug: roomSlug });
 }

@@ -6,6 +6,7 @@ const initialState = {
   isRoomCreating: false,
   rooms: [],
   joinedRoom: {},
+  isJoiningRoom: false,
 };
 
 export const userManagementSlice = createSlice({
@@ -33,16 +34,32 @@ export const userManagementSlice = createSlice({
       }
     },
 
+    updateRoomList: (state, action) => {
+      state.rooms = [...state.rooms, action.payload]
+    },
+
     setIsRoomCreating: (state, action) => {
       state.isRoomCreating = action.payload;
     },
 
     setJoinedRoom: (state, action) => {
+      state.isJoiningRoom = false;
       state.joinedRoom = action.payload;
+    },
+
+    setIsJoiningRoom: (state, action) => {
+      state.isJoiningRoom = action.payload;
     }
   },
 });
 
-export const { setAllUsers, setSelfUserInfo, setIsRoomCreating, setJoinedRoom, setAllRooms } = userManagementSlice.actions;
+export const {
+  setAllUsers,
+  setSelfUserInfo,
+  setIsRoomCreating,
+  setJoinedRoom, setAllRooms,
+  updateRoomList,
+  setIsJoiningRoom
+} = userManagementSlice.actions;
 
 export default userManagementSlice.reducer;

@@ -15,7 +15,7 @@ import SPMenuTab from './sp-menu-tab';
 const TabMenu = ({ tabs, tabPanels, add }) => {
 
     // add button's props
-    const { hasAdd, onSubmit, addButtonLabel, modalTitle } = add;
+    const { hasAdd, onSubmit, addButtonLabel, modalTitle, isRoomOwner } = add;
 
     // modal open/close state
     const [isOpen, setIsOpen] = useState(false)
@@ -26,7 +26,7 @@ const TabMenu = ({ tabs, tabPanels, add }) => {
      * @returns JSX.Element
      */
     const RenderAddButton = useMemo( ()=> () => {
-        if (hasAdd) {
+        if (hasAdd && isRoomOwner) {
             return (
                 <>
                     <Button
@@ -47,7 +47,7 @@ const TabMenu = ({ tabs, tabPanels, add }) => {
         }
         
         return <></>
-    },[isOpen])
+    },[isOpen, isRoomOwner])
 
     return (
         <Tabs isManual variant='enclosed'>

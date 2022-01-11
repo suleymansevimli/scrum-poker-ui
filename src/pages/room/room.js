@@ -5,13 +5,16 @@ import {
     Stack,
     Button,
     Box,
-    TabPanels,
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import UserCard from "../../components/user/user-card";
 import { createTask } from "../../wrappers/planning/planning-emitter";
 import TabMenu from "../../components/tab-menu/tab-menu";
 import { tabs, TabPanels as TabPanelRoom } from "../../constants/room-constants";
+import { useContext, useEffect, useState } from "react";
+import { joinRoomRequest } from "../../wrappers/auth/auth-emitter";
+import { useParams } from "react-router-dom";
+import { authContext } from "../../hooks/useAuth";
 
 /**
  * Scrum room
@@ -21,9 +24,33 @@ import { tabs, TabPanels as TabPanelRoom } from "../../constants/room-constants"
  * @returns {JSX.Element}
  */
 const Room = () => {
+
+    // states
+    const [isRoomOwner, setIsRoomOwner] = useState(false);
+
+    // auth provider
+    const { authed } = useContext(authContext);
+
     // redux
-    const { users } = useSelector(state => state.userManagementSlice);
+    const { users, isRoomCreating, joinedRoom } = useSelector(state => state.userManagementSlice);
     const { tasks } = useSelector(state => state.planningSlice);
+
+    // route
+    const { roomId } = useParams();
+
+    // join room
+    useEffect(() => {
+        if (!isRoomCreating && authed) {
+            joinRoomRequest(roomId);
+        }
+    }, [isRoomCreating, authed, roomId]);
+
+    // set room owner
+    useEffect(() => {
+        if (joinedRoom.roomOwner?.uniqueId === localStorage.getItem('token')) {
+            setIsRoomOwner(true);
+        }
+    }, [joinedRoom?.roomOwner?.uniqueId]);
 
     /**
      * Create Task Request
@@ -60,7 +87,8 @@ const Room = () => {
                                     hasAdd: true,
                                     addButtonLabel: "Create A New Task",
                                     onSubmit: onSubmitCreateTask,
-                                    modalTitle: "Create A New Task"
+                                    modalTitle: "Create A New Task",
+                                    isRoomOwner: isRoomOwner,
                                 }} />
                         </Box>
                     </Box>

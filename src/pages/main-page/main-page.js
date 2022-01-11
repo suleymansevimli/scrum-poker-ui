@@ -42,8 +42,8 @@ const MainPage = () => {
    * @author [suleymansevimli](https://github.com/suleymansevimli)
    */
   useEffect(() => {
-    if (joinedRoom.roomName) {
-      navigate(`/room/${joinedRoom.roomName}`);
+    if (joinedRoom.slug) {
+      navigate(`/room/${joinedRoom.slug}`);
     }
   }, [joinedRoom]);
 

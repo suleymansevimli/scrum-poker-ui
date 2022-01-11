@@ -3,7 +3,7 @@
  * 
  * @author [suleymansevimli](https://github.com/suleymansevimli)
  */
- export const AUTH_EVENT_ENUMS = {
+export const AUTH_EVENT_ENUMS = {
     CONNECT: "connect",
     USER_CONNECTED: "userConnected",
     GET_ALL_USERS: "getAllUsers",
@@ -18,7 +18,11 @@
     LOGOUT_REQUEST_ACCEPTED: "logoutRequestAccepted",
 
     GET_ALL_ROOMS: "getAllRooms",
+    UPDATED_ALL_ROOMS: "updatedAllRooms",
     NEW_ROOM_CREATE_REQUEST: "newRoomCreateRequest",
     NEW_ROOM_CREATE_ACCEPTED: "newRoomCreateAccepted",
     NEW_ROOM_CREATE_REJECTED: "newRoomCreateRejected",
+    ROOM_JOIN_REQUEST: "roomJoinRequest",
+    ROOM_JOIN_ACCEPTED: "roomJoinAccepted",
+    ROOM_JOIN_REJECTED: "roomJoinRejected",
 }
