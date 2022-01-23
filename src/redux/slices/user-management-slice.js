@@ -24,6 +24,7 @@ export const userManagementSlice = createSlice({
 
     setSelfUserInfo: (state, action) => {
       state.loginedUser = action.payload;
+      const user = state.users.find(user => user.uniqueId === action.payload.uniqueId);
     },
 
     setAllRooms: (state, action) => {
@@ -49,6 +50,15 @@ export const userManagementSlice = createSlice({
 
     setIsJoiningRoom: (state, action) => {
       state.isJoiningRoom = action.payload;
+    },
+
+    setUserDisconnected: (state, action) => {
+      const user = state.users.find(user => user.uniqueId === action.payload.uniqueId);
+      state.users = [user, ...state.users];
+    },
+
+    setClientId: (state, action) => {
+      state.loginedUser.id = action.payload.id;
     }
   },
 });
@@ -59,7 +69,9 @@ export const {
   setIsRoomCreating,
   setJoinedRoom, setAllRooms,
   updateRoomList,
-  setIsJoiningRoom
+  setIsJoiningRoom,
+  setUserDisconnected,
+  setClientId
 } = userManagementSlice.actions;
 
 export default userManagementSlice.reducer;

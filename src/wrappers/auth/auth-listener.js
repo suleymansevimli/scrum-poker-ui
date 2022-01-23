@@ -1,7 +1,7 @@
 import { AUTH_EVENT_ENUMS } from "./auth-enums";
-import { setAllRooms, setAllUsers, setIsJoiningRoom, setIsRoomCreating, setJoinedRoom, setSelfUserInfo, updateRoomList } from "../../redux/slices/user-management-slice";
+import { setAllRooms, setAllUsers, setClientId, setIsJoiningRoom, setIsRoomCreating, setJoinedRoom, setSelfUserInfo, setUserDisconnected, updateRoomList } from "../../redux/slices/user-management-slice";
 import { getReJoinAlreadyLoginedUser } from "./auth-emitter";
-import { authSocket } from "../socket-connections"; 
+import { authSocket } from "../socket-connections";
 
 /**
  * Auth Socket Listener
@@ -35,11 +35,16 @@ const AuthSocketListener = ({ dispatch, useAuth }) => {
      * 
      * @author [suleymansevimli](https://github.com/suleymansevimli)
      */
-    authSocket.on(AUTH_EVENT_ENUMS.USER_CONNECTED, () => {
+    authSocket.on(AUTH_EVENT_ENUMS.USER_CONNECTED, ({ id }) => {
         if (localStorage.getItem("token")) {
             getReJoinAlreadyLoginedUser({ uniqueId: localStorage.getItem("token") });
+            dispatch(setClientId({ id }))
         }
     });
+
+    authSocket.on(AUTH_EVENT_ENUMS.USER_DISCONNECTED, (user) => {
+        dispatch(setUserDisconnected(user));
+    })
 
     /**
      * User Already Exists
@@ -105,7 +110,7 @@ const AuthSocketListener = ({ dispatch, useAuth }) => {
      * 
      * @author [suleymansevimli](https://github.com/suleymansevimli)
      */
-     authSocket.on(AUTH_EVENT_ENUMS.GET_ALL_ROOMS, rooms => {
+    authSocket.on(AUTH_EVENT_ENUMS.GET_ALL_ROOMS, rooms => {
         dispatch(setAllRooms(rooms));
     });
 
@@ -123,7 +128,7 @@ const AuthSocketListener = ({ dispatch, useAuth }) => {
      * 
      * @author [suleymansevimli](https://github.com/suleymansevimli)
      */
-     authSocket.on(AUTH_EVENT_ENUMS.ROOM_JOIN_ACCEPTED, room => {
+    authSocket.on(AUTH_EVENT_ENUMS.ROOM_JOIN_ACCEPTED, room => {
         dispatch(setJoinedRoom(room));
     });
 
@@ -132,7 +137,7 @@ const AuthSocketListener = ({ dispatch, useAuth }) => {
      * 
      * @author [suleymansevimli](https://github.com/suleymansevimli)
      */
-     authSocket.on(AUTH_EVENT_ENUMS.ROOM_JOIN_REJECTED, ({reason, message}) => {
+    authSocket.on(AUTH_EVENT_ENUMS.ROOM_JOIN_REJECTED, ({ reason, message }) => {
         dispatch(setIsJoiningRoom(false));
 
         if (reason === "NOT_FOUND") {

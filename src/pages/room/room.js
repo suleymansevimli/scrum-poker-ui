@@ -15,6 +15,7 @@ import { useContext, useEffect, useState } from "react";
 import { joinRoomRequest } from "../../wrappers/auth/auth-emitter";
 import { useParams } from "react-router-dom";
 import { authContext } from "../../hooks/useAuth";
+import { LIVELINESS_STATUS_ENUMS } from "../../wrappers/auth/auth-enums";
 
 /**
  * Scrum room
@@ -104,7 +105,7 @@ const Room = () => {
                     justifyContent={"space-between"}>
 
                     <Stack>
-                        {users.map(user => (
+                        {users.filter(onlineUser => onlineUser.livelinessStatus === LIVELINESS_STATUS_ENUMS.ONLINE ).map(user => (
                             <UserCard user={user} key={user.userName} point={8} />
                         ))}
                     </Stack>

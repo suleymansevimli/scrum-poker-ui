@@ -16,7 +16,7 @@ import LoginForm from '../auth/login/login-form/login-form';
  * @param {Node|Function} children Wrapped Component 
  * @returns {JSX.Element}
  */
-const Layout = ({ children, layoutStyles = {}}) => {
+const Layout = ({ children, layoutStyles = {} }) => {
     const { authed } = useContext(authContext);
 
     return (
@@ -32,15 +32,24 @@ const Layout = ({ children, layoutStyles = {}}) => {
             </Box>
 
             {!authed
-                ? <Box display={'flex'} flex={12} alignItems={'center'} justifyContent={'center'} width={"100%"}>
-                    <LoginForm />
-                </Box>
-                : <Flex p={3} flex={12} width={"100%"}>
-                    <Box position="absolute" top="5" right="5">
-                        <ColorModeSwitcher justifySelf="flex-end" />
+                ?
+                (
+                    <Box display={'flex'} flex={12} alignItems={'center'} justifyContent={'center'} width={"100%"}>
+                        <Box position="absolute" top="5" right="5">
+                            <ColorModeSwitcher justifySelf="flex-end" />
+                        </Box>
+                        <LoginForm />
                     </Box>
-                    {children}
-                </Flex>
+                )
+                :
+                (
+                    <Flex p={3} flex={12} width={"100%"}>
+                        <Box position="absolute" top="5" right="5">
+                            <ColorModeSwitcher justifySelf="flex-end" />
+                        </Box>
+                        {children}
+                    </Flex>
+                )
             }
         </Box>
     )
