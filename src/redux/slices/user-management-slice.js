@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { JOINING_ROOM_STATUS_ENUMS } from '../../wrappers/auth/auth-enums';
 
 const initialState = {
   users: [],
@@ -24,7 +25,6 @@ export const userManagementSlice = createSlice({
 
     setSelfUserInfo: (state, action) => {
       state.loginedUser = action.payload;
-      const user = state.users.find(user => user.uniqueId === action.payload.uniqueId);
     },
 
     setAllRooms: (state, action) => {
@@ -36,7 +36,7 @@ export const userManagementSlice = createSlice({
     },
 
     updateRoomList: (state, action) => {
-      state.rooms = [...state.rooms, action.payload]
+      state.rooms = action.payload
     },
 
     setIsRoomCreating: (state, action) => {

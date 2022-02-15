@@ -53,6 +53,8 @@ const Room = () => {
         }
     }, [joinedRoom?.roomOwner?.uniqueId]);
 
+    console.log('room', joinedRoom);
+
     /**
      * Create Task Request
      * 
@@ -105,8 +107,8 @@ const Room = () => {
                     justifyContent={"space-between"}>
 
                     <Stack>
-                        {users.filter(onlineUser => onlineUser.livelinessStatus === LIVELINESS_STATUS_ENUMS.ONLINE ).map(user => (
-                            <UserCard user={user} key={user.userName} point={8} />
+                        {joinedRoom?.users?.filter(onlineUser => onlineUser.livelinessStatus === LIVELINESS_STATUS_ENUMS.ONLINE ).map(user => (
+                            <UserCard user={user} key={user.userName} point={12} />
                         ))}
                     </Stack>
 
