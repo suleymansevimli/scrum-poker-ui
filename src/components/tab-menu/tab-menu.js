@@ -12,7 +12,7 @@ import CreateTaskForm from '../static/forms/create-task-form';
 import PropTypes from 'prop-types';
 import SPMenuTab from './sp-menu-tab';
 
-const TabMenu = ({ tabs, tabPanels, add }) => {
+const TabMenu = ({ tabs, tabPanels, add, currentTab }) => {
 
     // add button's props
     const { hasAdd, onSubmit, addButtonLabel, modalTitle, isRoomOwner } = add;
@@ -25,7 +25,7 @@ const TabMenu = ({ tabs, tabPanels, add }) => {
      * 
      * @returns JSX.Element
      */
-    const RenderAddButton = useMemo( ()=> () => {
+    const RenderAddButton = useMemo(() => () => {
         if (hasAdd && isRoomOwner) {
             return (
                 <>
@@ -38,19 +38,18 @@ const TabMenu = ({ tabs, tabPanels, add }) => {
                     <SPModal
                         isOpen={isOpen}
                         onClose={() => setIsOpen(false)}
-                        modalTitle={modalTitle}
-                    >
+                        modalTitle={modalTitle}>
                         <CreateTaskForm onSubmit={onSubmit} />
                     </SPModal>
                 </>
             )
         }
-        
+
         return <></>
-    },[isOpen, isRoomOwner])
+    }, [isOpen, isRoomOwner])
 
     return (
-        <Tabs isManual variant='enclosed'>
+        <Tabs index={currentTab} isManual variant='enclosed'>
             <TabList display="flex" justifyContent="space-between">
                 <Box d="flex">
                     <SPMenuTab tabs={tabs} />
@@ -65,7 +64,7 @@ const TabMenu = ({ tabs, tabPanels, add }) => {
                             maxH={"280px"}
                             overflow={"auto"}
                             key={index}>
-                                {tabPanel.children}
+                            {tabPanel.children}
                         </TabPanel>
                     ))
                 }

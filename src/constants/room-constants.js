@@ -4,15 +4,18 @@ import TaskCard from "../components/task-card/task-card";
 export const tabs = [
     {
         id: 1,
-        label: "All Tasks"
+        label: "All Tasks",
+        key: "OPEN"
     },
     {
         id: 2,
-        label: "On Process"
+        label: "On Process",
+        key: "IN_PROGRESS"
     },
     {
         id: 3,
-        label: "Done"
+        label: "Done",
+        key: "DONE"
     }
 ];
 

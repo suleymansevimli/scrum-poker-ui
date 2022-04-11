@@ -1,21 +1,22 @@
 import Layout from "../../components/layout/layout";
 import SelectBoard from "../../components/room/select-board";
+import TabMenu from "../../components/tab-menu/tab-menu";
+import UserCard from "../../components/user/user-card";
 import {
     Flex,
     Stack,
-    Button,
     Box,
 } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
-import UserCard from "../../components/user/user-card";
+import { useDispatch, useSelector } from "react-redux";
 import { createTask } from "../../wrappers/planning/planning-emitter";
-import TabMenu from "../../components/tab-menu/tab-menu";
 import { tabs, TabPanels as TabPanelRoom } from "../../constants/room-constants";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { joinRoomRequest } from "../../wrappers/auth/auth-emitter";
 import { useParams } from "react-router-dom";
 import { authContext } from "../../hooks/useAuth";
 import { LIVELINESS_STATUS_ENUMS } from "../../wrappers/auth/auth-enums";
+import { setActiveTab, setIsVoting, setVotingTask } from "../../redux/slices/planning-slice";
+import { setIsRoomOwner } from "../../redux/slices/user-management-slice";
 
 /**
  * Scrum room
@@ -26,15 +27,15 @@ import { LIVELINESS_STATUS_ENUMS } from "../../wrappers/auth/auth-enums";
  */
 const Room = () => {
 
-    // states
-    const [isRoomOwner, setIsRoomOwner] = useState(false);
-
     // auth provider
     const { authed } = useContext(authContext);
 
+    // dispatch
+    const dispatch = useDispatch();
+
     // redux
-    const { users, isRoomCreating, joinedRoom } = useSelector(state => state.userManagementSlice);
-    const { tasks } = useSelector(state => state.planningSlice);
+    const { isRoomCreating, joinedRoom, isRoomOwner } = useSelector(state => state.userManagementSlice);
+    const { tasks, isVoting, activeTab, userRatingList } = useSelector(state => state.planningSlice);
 
     // route
     const { roomId } = useParams();
@@ -49,11 +50,18 @@ const Room = () => {
     // set room owner
     useEffect(() => {
         if (joinedRoom.roomOwner?.uniqueId === localStorage.getItem('token')) {
-            setIsRoomOwner(true);
+            dispatch(setIsRoomOwner(true));
         }
     }, [joinedRoom?.roomOwner?.uniqueId]);
 
-    console.log('room', joinedRoom);
+    // when user re-enter room
+    useEffect(() => {
+        if (tasks.IN_PROGRESS.length > 0) {
+            dispatch(setIsVoting(true))
+            dispatch(setActiveTab("IN_PROGRESS"))
+            dispatch(setVotingTask(tasks.IN_PROGRESS[0]))
+        }
+    }, [JSON.stringify(tasks.IN_PROGRESS)])
 
     /**
      * Create Task Request
@@ -81,9 +89,10 @@ const Room = () => {
                     borderRight={"1px solid #ddd"}>
 
                     <Box display={"flex"} flexDirection={"column"} gridGap={10}>
-                        <SelectBoard />
+                        <SelectBoard isVoting={isVoting} isRoomOwner={isRoomOwner} />
                         <Box flex={1} width={"100%"}  >
                             <TabMenu
+                                currentTab={activeTab}
                                 tabs={tabs}
                                 tabPanels={TabPanelRoom(tasks)}
                                 add={{
@@ -107,16 +116,17 @@ const Room = () => {
                     justifyContent={"space-between"}>
 
                     <Stack>
-                        {joinedRoom?.users?.filter(onlineUser => onlineUser.livelinessStatus === LIVELINESS_STATUS_ENUMS.ONLINE ).map(user => (
-                            <UserCard user={user} key={user.userName} point={12} />
-                        ))}
+                        {
+                            isVoting
+                                ? userRatingList.map(user => (
+                                    <UserCard user={user.user} key={user.userName} point={user.rating} />
+                                ))
+                                : joinedRoom?.users?.filter(onlineUser => onlineUser.livelinessStatus === LIVELINESS_STATUS_ENUMS.ONLINE)
+                                    .map(user => (
+                                        <UserCard user={user} key={user.userName} point={"-"} />
+                                    ))
+                        }
                     </Stack>
-
-                    <Flex>
-                        <Button isFullWidth bg={"green.700"} _hover={{ bg: "green.400" }}>
-                            Finish
-                        </Button>
-                    </Flex>
                 </Stack>
             </Flex>
         </Layout>

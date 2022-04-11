@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { tabs } from "../../constants/room-constants";
 
 const initialState = {
     tasks: {
@@ -6,7 +7,11 @@ const initialState = {
         IN_PROGRESS: [],
         DONE: []
     },
-    isShowCreateTaskModal: false
+    isShowCreateTaskModal: false,
+    isVoting: false,
+    activeTab: 0,
+    votingTask: null,
+    userRatingList: [],
 }
 
 export const planningSlice = createSlice({
@@ -17,11 +22,60 @@ export const planningSlice = createSlice({
             state.tasks = payload.tasks
         },
 
+        setActiveTab: (state, { payload }) => {
+            const getIndex = tabs.findIndex(tab => tab.key === payload)
+            state.activeTab = getIndex
+        },
+
+        setVotingTask: (state, { payload }) => {
+            state.votingTask = payload
+        },
+
         setIsShowCreateTaskModal: (state, { payload }) => {
             state.isShowCreateTaskModal = !(state.isShowCreateTaskModal)
-        }
+        },
+
+        setStartVoting: (state, { payload }) => {
+            // task state changes
+            state.tasks.OPEN = state.tasks.OPEN.filter(task => task.id !== payload.task.id);
+            state.tasks.IN_PROGRESS = [...state.tasks.IN_PROGRESS, payload.task];
+            state.activeTab = "IN_PROGRESS";
+
+            // voting state changes
+            state.isVoting = true;
+            state.votingTask = payload.task;
+        },
+
+        setIsVoting: (state, { payload }) => {
+            state.isVoting = payload
+        },
+
+        setStopVoting: (state, { payload }) => {
+            state.isVoting = false
+
+            state.tasks.IN_PROGRESS = state.tasks.IN_PROGRESS.filter(task => task.id !== payload.task.id)
+            state.tasks.DONE = [...state.tasks.DONE, payload.task];
+
+            state.votingTask = null;
+            state.userRatingList.forEach(userRating => { 
+                userRating.rating = '-';
+            });
+        },
+
+        setUserRatingList: (state, { payload }) => {
+            state.userRatingList = payload
+        },
     }
 });
 
-export const { setAllTasks } = planningSlice.actions;
+export const {
+    setAllTasks,
+    setStartVoting,
+    setIsVoting,
+    setStopVoting,
+    setActiveTab,
+    setVotingTask,
+    setUserRatingList
+} = planningSlice.actions;
+
 export default planningSlice.reducer;

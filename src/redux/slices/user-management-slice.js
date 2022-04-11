@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { JOINING_ROOM_STATUS_ENUMS } from '../../wrappers/auth/auth-enums';
 
 const initialState = {
   users: [],
@@ -8,6 +7,7 @@ const initialState = {
   rooms: [],
   joinedRoom: {},
   isJoiningRoom: false,
+  isRoomOwner: false,
 };
 
 export const userManagementSlice = createSlice({
@@ -43,6 +43,10 @@ export const userManagementSlice = createSlice({
       state.isRoomCreating = action.payload;
     },
 
+    setIsRoomOwner : (state, action) => {
+      state.isRoomOwner = action.payload;
+    },
+
     setJoinedRoom: (state, action) => {
       state.isJoiningRoom = false;
       state.joinedRoom = action.payload;
@@ -59,6 +63,11 @@ export const userManagementSlice = createSlice({
 
     setClientId: (state, action) => {
       state.loginedUser.id = action.payload.id;
+    },
+
+    setNewUserJoinedToRoom: (state, action) => {
+      const userIndex = state.joinedRoom.users.findIndex(user => user.uniqueId === action.payload.uniqueId)
+      state.joinedRoom.users[userIndex] = action.payload;
     }
   },
 });
@@ -67,11 +76,14 @@ export const {
   setAllUsers,
   setSelfUserInfo,
   setIsRoomCreating,
-  setJoinedRoom, setAllRooms,
+  setJoinedRoom, 
+  setAllRooms,
   updateRoomList,
   setIsJoiningRoom,
   setUserDisconnected,
-  setClientId
+  setClientId,
+  setNewUserJoinedToRoom,
+  setIsRoomOwner
 } = userManagementSlice.actions;
 
 export default userManagementSlice.reducer;

@@ -4,7 +4,7 @@ const ScrumPokerCard = ({ isSelected, cardNumber, onSelected, isDisable=false })
 
     const onClickCard = (cardNumber) => {
         if (cardNumber === 'coffee') {
-            // !TODO: show coffee
+            // ! TODO: show coffee
         }
     
         onSelected(isSelected ? null : cardNumber);

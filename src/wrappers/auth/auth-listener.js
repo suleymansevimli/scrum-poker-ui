@@ -1,5 +1,5 @@
 import { AUTH_EVENT_ENUMS } from "./auth-enums";
-import { setAllRooms, setAllUsers, setClientId, setIsJoiningRoom, setIsRoomCreating, setJoinedRoom, setSelfUserInfo, setUserDisconnected, updateRoomList } from "../../redux/slices/user-management-slice";
+import { setAllRooms, setAllUsers, setClientId, setIsJoiningRoom, setIsRoomCreating, setJoinedRoom, setNewUserJoinedToRoom, setSelfUserInfo, setUserDisconnected, updateRoomList } from "../../redux/slices/user-management-slice";
 import { getReJoinAlreadyLoginedUser } from "./auth-emitter";
 import { authSocket } from "../socket-connections";
 
@@ -42,8 +42,18 @@ const AuthSocketListener = ({ dispatch, useAuth }) => {
         }
     });
 
+    /**
+     * Kullanıcı disconnect olduğunda bu event yayınlanır.
+     */
     authSocket.on(AUTH_EVENT_ENUMS.USER_DISCONNECTED, (user) => {
         dispatch(setUserDisconnected(user));
+    });
+
+    /**
+     * Odaya Yeni katılan kullanıcı için gönderilen event
+     */
+    authSocket.on(AUTH_EVENT_ENUMS.NEW_USER_JOINED, (user) => { 
+        dispatch(setNewUserJoinedToRoom(user));
     })
 
     /**
@@ -80,6 +90,7 @@ const AuthSocketListener = ({ dispatch, useAuth }) => {
      */
     authSocket.on(AUTH_EVENT_ENUMS.LOGOUT_REQUEST_ACCEPTED, () => {
         localStorage.removeItem("token");
+        window.location.reload();
         dispatch(setSelfUserInfo({}));
     });
 

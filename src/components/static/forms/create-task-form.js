@@ -4,7 +4,8 @@ import {
     FormErrorMessage,
     Input,
     Button,
-    Textarea
+    Textarea,
+    Flex
 } from '@chakra-ui/react'
 import { Formik, Field, Form } from 'formik';
 import { isRequired } from '../../../utils/form/validation-utils';
@@ -15,7 +16,7 @@ import { isRequired } from '../../../utils/form/validation-utils';
  * @param {Function} {onSubmit: Function} 
  * @returns JSX.Element
  */
-const CreateTaskForm = ({onSubmit}) => {
+const CreateTaskForm = ({ onSubmit }) => {
     // initial form values object
     const initialFormValues = {
         name: '',
@@ -23,19 +24,19 @@ const CreateTaskForm = ({onSubmit}) => {
     }
 
     // validations
-    const validate = (type,value) => {
+    const validate = (type, value) => {
         switch (type) {
             case 'name':
-                return isRequired(value,type);
+                return isRequired(value, type);
             default:
                 break;
         }
     }
 
     // when form submited 
-    const onFormSubmit = (values,actions) => {
+    const onFormSubmit = (values, actions) => {
         actions.setSubmitting(false);
-        onSubmit(values,actions);
+        onSubmit(values, actions);
     }
 
     return (
@@ -45,7 +46,7 @@ const CreateTaskForm = ({onSubmit}) => {
 
             {(props) => (
                 <Form>
-                    <Field name='name' validate={(value)=>validate('name', value)}>
+                    <Field name='name' validate={(value) => validate('name', value)}>
                         {({ field, form }) => (
                             <FormControl isInvalid={form.errors.name && form.touched.name}>
                                 <FormLabel htmlFor='name'>Task Name</FormLabel>
@@ -57,7 +58,7 @@ const CreateTaskForm = ({onSubmit}) => {
 
                     <Field name='description'>
                         {({ field, form }) => (
-                            <FormControl isInvalid={form.errors.description && form.touched.description}>
+                            <FormControl mt={5} isInvalid={form.errors.description && form.touched.description}>
                                 <FormLabel htmlFor='description'>Task Name</FormLabel>
                                 <Textarea {...field} id='description' placeholder='description' />
                                 <FormErrorMessage>{form.errors.description}</FormErrorMessage>
@@ -65,14 +66,15 @@ const CreateTaskForm = ({onSubmit}) => {
                         )}
                     </Field>
 
-                    <Button
-                        mt={4}
-                        colorScheme='teal'
-                        isLoading={props.isSubmitting}
-                        type='submit'
-                    >
-                        Create
-                    </Button>
+                    <Flex justifyContent={"flex-end"}>
+                        <Button
+                            mt={4}
+                            colorScheme='teal'
+                            isLoading={props.isSubmitting}
+                            type='submit'>
+                            Create
+                        </Button>
+                    </Flex>
                 </Form>
             )}
         </Formik>

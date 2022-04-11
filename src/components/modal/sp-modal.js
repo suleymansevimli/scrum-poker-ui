@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
  * 
  * @returns 
  */
-const SPModal = ({onClose, isOpen, children, isCentered, modalTitle, closeLabel, size}) => {
+const SPModal = ({ onClose, isOpen, children, isCentered, modalTitle, closeLabel, size, isShowCloseButton }) => {
 
     return (
         <Modal onClose={onClose} size={size} isOpen={isOpen} isCentered={isCentered}>
@@ -29,9 +29,11 @@ const SPModal = ({onClose, isOpen, children, isCentered, modalTitle, closeLabel,
                     {children}
                 </ModalBody>
                 <ModalFooter>
-                    <Button onClick={onClose}>
-                        {closeLabel}
-                    </Button>
+                    {isShowCloseButton && (
+                        <Button onClick={onClose}>
+                            {closeLabel}
+                        </Button>
+                    )}
                 </ModalFooter>
             </ModalContent>
         </Modal>
@@ -40,14 +42,15 @@ const SPModal = ({onClose, isOpen, children, isCentered, modalTitle, closeLabel,
 
 export default SPModal;
 
-SPModal.propTypes = { 
-    isOpen: PropTypes.bool.isRequired, 
-    children: PropTypes.node.isRequired, 
-    isCentered: PropTypes.bool, 
-    modalTitle: PropTypes.string.isRequired, 
+SPModal.propTypes = {
+    isOpen: PropTypes.bool.isRequired,
+    children: PropTypes.node.isRequired,
+    isCentered: PropTypes.bool,
+    modalTitle: PropTypes.string.isRequired,
     closeLabel: PropTypes.string.isRequired,
     onClose: PropTypes.func.isRequired,
-    size: PropTypes.string
+    size: PropTypes.string,
+    isShowCloseButton: PropTypes.bool
 }
 
 SPModal.defaultProps = {
