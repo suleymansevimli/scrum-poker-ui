@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Box, Text } from '@chakra-ui/react';
 import Layout from '../../components/layout/layout';
-import { Input, Tooltip } from '@chakra-ui/react';
+import { Input } from '@chakra-ui/react';
 import { setIsRoomCreating } from '../../redux/slices/user-management-slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -24,7 +24,7 @@ const MainPage = () => {
 
   // redux 
   const dispatch = useDispatch();
-  const { rooms } = useSelector(state => state.userManagementSlice);
+  const { room, users } = useSelector(state => state.userManagementSlice);
 
   /**
    * Room oluşturma işlemini başlatır.
@@ -38,10 +38,9 @@ const MainPage = () => {
     <Layout layoutStyles={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
       <Box display={'flex'} gridGap={10} flexDirection='column' alignItems={'center'} justifyContent={'center'} width={"100%"} >
 
-        <Box d="grid" placeItems={"center"} placeItems="center" gridTemplateColumns={"auto"} gridGap={15}>
+        <Box d="grid" placeItems={"center"} gridTemplateColumns={"auto"} gridGap={15}>
           {
-            rooms.length > 0 &&
-            rooms.map(room => (
+            Object.keys(room).length > 0 && (
               <Box
                 cursor={'pointer'}
                 onClick={() => navigate(`/room/${room.slug}`)}
@@ -57,7 +56,7 @@ const MainPage = () => {
                 justifyContent={'center'}>
                 <Text>{room.slug}</Text>
               </Box>
-            ))
+            )
           }
         </Box>
 
@@ -67,15 +66,27 @@ const MainPage = () => {
           flexDirection="column"
           alignItems="center"
           justifyContent={'center'} >
-          {rooms.length === 1 &&
+          {Object.keys(room).length === 1 &&
             (
               <Box border={'1px solid orange'} padding={15} borderRadius={8}>
                 <Text color={"white"}> Sadece bir tane oda oluşturulabilir. Oluşturulan odaya giriş yapabilirsiniz. </Text>
               </Box>
             )
           }
-          <Input placeholder="Room Name" disabled={rooms.length === 1} value={roomName} onChange={e => setRoomName(e.target.value)} />
-          <Button disabled={rooms.length === 1} onClick={joinRoom}>Oluştur</Button>
+
+          <ul>
+             {
+               users.map(user => {
+                  return (
+                    <li key={user.id}>
+                      <Text>{user.userName} - {user.livelinessStatus} - {user.userType}</Text>
+                    </li>
+                  )
+               })
+             }
+          </ul>
+          <Input placeholder="Room Name" disabled={Object.keys(room).length} value={roomName} onChange={e => setRoomName(e.target.value)} />
+          <Button disabled={Object.keys(room).length} onClick={joinRoom}>Oluştur</Button>
         </Box>
       </Box>
     </Layout >

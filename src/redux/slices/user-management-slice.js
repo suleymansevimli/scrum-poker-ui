@@ -4,8 +4,7 @@ const initialState = {
   users: [],
   loginedUser: {},
   isRoomCreating: false,
-  rooms: [],
-  joinedRoom: {},
+  room: {},
   isJoiningRoom: false,
   isRoomOwner: false,
 };
@@ -27,16 +26,8 @@ export const userManagementSlice = createSlice({
       state.loginedUser = action.payload;
     },
 
-    setAllRooms: (state, action) => {
-      if (!action.payload) {
-        state.rooms = []
-      } else {
-        state.rooms = action.payload
-      }
-    },
-
-    updateRoomList: (state, action) => {
-      state.rooms = action.payload
+    setRoom: (state, action) => {
+      state.room = action.payload ?? {};
     },
 
     setIsRoomCreating: (state, action) => {
@@ -47,27 +38,22 @@ export const userManagementSlice = createSlice({
       state.isRoomOwner = action.payload;
     },
 
-    setJoinedRoom: (state, action) => {
-      state.isJoiningRoom = false;
-      state.joinedRoom = action.payload;
-    },
-
     setIsJoiningRoom: (state, action) => {
       state.isJoiningRoom = action.payload;
     },
 
     setUserDisconnected: (state, action) => {
-      const user = state.users.find(user => user.uniqueId === action.payload.uniqueId);
-      state.users = [user, ...state.users];
+      const userIndex = state.users.findIndex(user => user.id === action.payload.uniqueId);
+      state.users[userIndex] = action.payload;
+      state.users = [...state.users];
     },
 
     setClientId: (state, action) => {
       state.loginedUser.id = action.payload.id;
     },
 
-    setNewUserJoinedToRoom: (state, action) => {
-      const userIndex = state.joinedRoom.users.findIndex(user => user.uniqueId === action.payload.uniqueId)
-      state.joinedRoom.users[userIndex] = action.payload;
+    setUserType: (state, action) => {
+      state.loginedUser.userType = action.payload;
     }
   },
 });
@@ -76,14 +62,13 @@ export const {
   setAllUsers,
   setSelfUserInfo,
   setIsRoomCreating,
-  setJoinedRoom, 
-  setAllRooms,
+  setRoom,
   updateRoomList,
   setIsJoiningRoom,
   setUserDisconnected,
   setClientId,
-  setNewUserJoinedToRoom,
-  setIsRoomOwner
+  setIsRoomOwner,
+  setUserType
 } = userManagementSlice.actions;
 
 export default userManagementSlice.reducer;

@@ -91,6 +91,16 @@ const PlanningSocketListener = ({ dispatch }) => {
     planningSocket.on(PLANNING_EVENT_TYPES.GET_ALL_USER_RATING_LIST, ({ userRatingList }) => {
         dispatch(setUserRatingList(userRatingList))
     })
+
+    /**
+     * CURRENT USER VOTE LIST UPDATED
+     * 
+     * @author [suleymansevimli](https://github.com/suleymansevimli)
+     */
+     planningSocket.on(PLANNING_EVENT_TYPES.CURRENT_USER_VOTE_LIST_UPDATED, ({ userRatingList }) => {
+        // TODO: UserVoteList alanı güncellenecek.s
+    })
+    
 }
 
 export default PlanningSocketListener;

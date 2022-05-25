@@ -2,8 +2,7 @@ import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { authContext } from '../../hooks/useAuth';
 import { Flex, Box, Text } from "@chakra-ui/react";
-import { useDispatch, useSelector } from 'react-redux';
-import { setJoinedRoom } from '../../redux/slices/user-management-slice';
+import { useSelector } from 'react-redux';
 import './navbar.css';
 
 /**
@@ -21,7 +20,6 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     // redux
-    const dispatch = useDispatch();
     const { loginedUser } = useSelector(state => state.userManagementSlice);
     const { userName } = loginedUser;
 
@@ -29,10 +27,7 @@ const Navbar = () => {
      * Logout function
      */
     const handleLogout = () => {
-        logout().then(() => {
-            dispatch(setJoinedRoom({}));
-            navigate('/')
-        });
+        logout();
     }
 
     return (

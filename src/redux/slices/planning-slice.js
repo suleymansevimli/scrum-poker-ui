@@ -12,6 +12,7 @@ const initialState = {
     activeTab: 0,
     votingTask: null,
     userRatingList: [],
+    lastVotedTask: {}
 }
 
 export const planningSlice = createSlice({
@@ -37,10 +38,14 @@ export const planningSlice = createSlice({
 
         setStartVoting: (state, { payload }) => {
             // task state changes
-            state.tasks.OPEN = state.tasks.OPEN.filter(task => task.id !== payload.task.id);
+            state.tasks.OPEN = state.tasks.OPEN.filter(task => task.taskId !== payload.task.taskId);
             state.tasks.IN_PROGRESS = [...state.tasks.IN_PROGRESS, payload.task];
             state.activeTab = "IN_PROGRESS";
 
+            state.userRatingList.forEach(userRating => { 
+                userRating.rating = '-';
+            });
+            
             // voting state changes
             state.isVoting = true;
             state.votingTask = payload.task;
@@ -57,9 +62,7 @@ export const planningSlice = createSlice({
             state.tasks.DONE = [...state.tasks.DONE, payload.task];
 
             state.votingTask = null;
-            state.userRatingList.forEach(userRating => { 
-                userRating.rating = '-';
-            });
+            state.lastVotedTask = payload.task;
         },
 
         setUserRatingList: (state, { payload }) => {

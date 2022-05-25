@@ -10,13 +10,13 @@ import { authSocket } from "../socket-connections";
  * @author [suleymansevimli](https://github.com/suleymansevimli)
  */
 export const loginRequest = (userName) => {
-    return authSocket.emit(AUTH_EVENT_ENUMS.SET_USER_NAME_REQUEST, { userName });
+    return authSocket.emit(AUTH_EVENT_ENUMS.LOGIN_REQUEST, { userName });
 }
 
 /**
  * ### Get Re Join Request
  *  
- * @param {Object} { uniqueId: String }
+ * @param {{uniqueId: string}} uniqueId Kullanıcının uniqueId'si
  * @returns Socket Emitter
  * 
  * @author [suleymansevimli](https://github.com/suleymansevimli)
@@ -32,8 +32,8 @@ export const getReJoinAlreadyLoginedUser = ({ uniqueId }) => {
  * 
  * @author [suleymansevimli](https://github.com/suleymansevimli)
  */
-export const logoutRequest = () => {
-    return authSocket.emit(AUTH_EVENT_ENUMS.USER_LOGOUT_REQUEST);
+export const logoutRequest = ({ uniqueId }) => {
+    return authSocket.emit(AUTH_EVENT_ENUMS.USER_LOGOUT_REQUEST, { uniqueId });
 }
 
 /**

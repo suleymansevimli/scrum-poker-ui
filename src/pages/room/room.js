@@ -14,7 +14,6 @@ import { useContext, useEffect } from "react";
 import { joinRoomRequest } from "../../wrappers/auth/auth-emitter";
 import { useParams } from "react-router-dom";
 import { authContext } from "../../hooks/useAuth";
-import { LIVELINESS_STATUS_ENUMS } from "../../wrappers/auth/auth-enums";
 import { setActiveTab, setIsVoting, setVotingTask } from "../../redux/slices/planning-slice";
 import { setIsRoomOwner } from "../../redux/slices/user-management-slice";
 
@@ -34,7 +33,7 @@ const Room = () => {
     const dispatch = useDispatch();
 
     // redux
-    const { isRoomCreating, joinedRoom, isRoomOwner } = useSelector(state => state.userManagementSlice);
+    const { isRoomCreating, room, isRoomOwner, users, loginedUser } = useSelector(state => state.userManagementSlice);
     const { tasks, isVoting, activeTab, userRatingList } = useSelector(state => state.planningSlice);
 
     // route
@@ -49,10 +48,10 @@ const Room = () => {
 
     // set room owner
     useEffect(() => {
-        if (joinedRoom.roomOwner?.uniqueId === localStorage.getItem('token')) {
+        if (room.roomOwner?.uniqueId === localStorage.getItem('token')) {
             dispatch(setIsRoomOwner(true));
         }
-    }, [joinedRoom?.roomOwner?.uniqueId]);
+    }, [room?.roomOwner?.uniqueId]);
 
     // when user re-enter room
     useEffect(() => {
@@ -89,7 +88,7 @@ const Room = () => {
                     borderRight={"1px solid #ddd"}>
 
                     <Box display={"flex"} flexDirection={"column"} gridGap={10}>
-                        <SelectBoard isVoting={isVoting} isRoomOwner={isRoomOwner} />
+                        <SelectBoard isVoting={isVoting} isRoomOwner={loginedUser.userType === 'admin'} />
                         <Box flex={1} width={"100%"}  >
                             <TabMenu
                                 currentTab={activeTab}
@@ -100,7 +99,7 @@ const Room = () => {
                                     addButtonLabel: "Create A New Task",
                                     onSubmit: onSubmitCreateTask,
                                     modalTitle: "Create A New Task",
-                                    isRoomOwner: isRoomOwner,
+                                    isRoomOwner: loginedUser.userType === 'admin',
                                 }} />
                         </Box>
                     </Box>
@@ -121,10 +120,9 @@ const Room = () => {
                                 ? userRatingList.map(user => (
                                     <UserCard user={user.user} key={user.userName} point={user.rating} />
                                 ))
-                                : joinedRoom?.users?.filter(onlineUser => onlineUser.livelinessStatus === LIVELINESS_STATUS_ENUMS.ONLINE)
-                                    .map(user => (
-                                        <UserCard user={user} key={user.userName} point={"-"} />
-                                    ))
+                                : users.map(user => (
+                                    <UserCard user={user} key={user.userName} point={"-"} />
+                                ))
                         }
                     </Stack>
                 </Stack>

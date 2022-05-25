@@ -24,9 +24,8 @@ function useAuth() {
     },
     logout() {
       return new Promise((res) => {
-        logoutRequest()
+        logoutRequest({ uniqueId: localStorage.getItem("token") })
         setAuthed(false);
-        localStorage.removeItem("token");
         res();
       });
     },

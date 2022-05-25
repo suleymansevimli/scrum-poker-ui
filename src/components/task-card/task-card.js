@@ -5,13 +5,15 @@ import PropTypes from 'prop-types';
 import { startVoting, stopVoting } from "../../wrappers/planning/planning-emitter";
 import { useSelector } from "react-redux";
 
-const TaskCard = ({ name, description, id, status }) => {
+const TaskCard = ({ taskName, taskDescription, taskId, status }) => {
 
     const { isVoting } = useSelector(state => state.planningSlice);
-    const { isRoomOwner } = useSelector(state => state.userManagementSlice);
+    const { loginedUser } = useSelector(state => state.userManagementSlice);
 
     // task detail modal open/close state
     const [isOpen, setIsOpen] = useState(false);
+
+    const isRoomOwner = loginedUser.userType === 'admin';
 
     return (
         <Box
@@ -36,9 +38,9 @@ const TaskCard = ({ name, description, id, status }) => {
                     flexDirection={"column"}
                     justifyContent={"flex-start"}>
 
-                    <Text fontSize={24}> {name} </Text>
+                    <Text fontSize={24}> {taskName} </Text>
                     <Text fontSize={17} fontWeight={"thin"}>
-                        {description.split("").length > 25 ? description.substring(0, 25) + "..." : description}
+                        {taskDescription.split("").length > 25 ? taskDescription.substring(0, 25) + "..." : taskDescription}
                     </Text>
                 </Box>
 
@@ -49,7 +51,7 @@ const TaskCard = ({ name, description, id, status }) => {
 
                     {status === "OPEN" && isRoomOwner && (
                         <Button
-                            onClick={() => startVoting({ id })}
+                            onClick={() => startVoting({ taskId })}
                             bg={"green.400"}
                             transition={"all 1s"}
                             _hover={{ background: "tomato" }}
@@ -61,7 +63,7 @@ const TaskCard = ({ name, description, id, status }) => {
 
                     {status === "IN_PROGRESS" && isRoomOwner && (
                         <Button
-                            onClick={() => stopVoting({ id })}
+                            onClick={() => stopVoting({ id: taskId })}
                             isFullWidth bg={"green.700"}
                             _hover={{ bg: "green.400" }}>
                             Finish
@@ -75,8 +77,8 @@ const TaskCard = ({ name, description, id, status }) => {
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
                 size="full"
-                modalTitle={name}>
-                <Text>Task Modal Content</Text>
+                modalTitle={taskName}>
+                <Text>{taskDescription}</Text>
             </SPModal>
 
         </Box>
@@ -86,11 +88,11 @@ const TaskCard = ({ name, description, id, status }) => {
 export default TaskCard;
 
 TaskCard.propTypes = {
-    name: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired
+    taskName: PropTypes.string.isRequired,
+    taskDescription: PropTypes.string.isRequired
 }
 
 TaskCard.defaultProps = {
-    name: '',
-    description: ''
+    taskName: '',
+    taskDescription: ''
 }

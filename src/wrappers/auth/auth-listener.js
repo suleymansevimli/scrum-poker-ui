@@ -1,7 +1,19 @@
 import { AUTH_EVENT_ENUMS } from "./auth-enums";
-import { setAllRooms, setAllUsers, setClientId, setIsJoiningRoom, setIsRoomCreating, setJoinedRoom, setNewUserJoinedToRoom, setSelfUserInfo, setUserDisconnected, updateRoomList } from "../../redux/slices/user-management-slice";
-import { getReJoinAlreadyLoginedUser } from "./auth-emitter";
+import { 
+    setRoom, 
+    setAllUsers, 
+    setClientId, 
+    setIsJoiningRoom, 
+    setIsRoomCreating, 
+    setJoinedRoom,
+    setSelfUserInfo,
+    setUserDisconnected, 
+    updateRoomList, 
+    setUserType
+} from "../../redux/slices/user-management-slice";
+
 import { authSocket } from "../socket-connections";
+import { getReJoinAlreadyLoginedUser } from "./auth-emitter";
 
 /**
  * Auth Socket Listener
@@ -50,13 +62,6 @@ const AuthSocketListener = ({ dispatch, useAuth }) => {
     });
 
     /**
-     * Odaya Yeni katılan kullanıcı için gönderilen event
-     */
-    authSocket.on(AUTH_EVENT_ENUMS.NEW_USER_JOINED, (user) => { 
-        dispatch(setNewUserJoinedToRoom(user));
-    })
-
-    /**
      * User Already Exists
      * 
      * @author [suleymansevimli](https://github.com/suleymansevimli)
@@ -90,8 +95,26 @@ const AuthSocketListener = ({ dispatch, useAuth }) => {
      */
     authSocket.on(AUTH_EVENT_ENUMS.LOGOUT_REQUEST_ACCEPTED, () => {
         localStorage.removeItem("token");
-        window.location.reload();
         dispatch(setSelfUserInfo({}));
+    });
+
+    /**
+     * User logout request rejected
+     * 
+     * @author [suleymansevimli](https://github.com/suleymansevimli)
+     */
+     authSocket.on(AUTH_EVENT_ENUMS.USER_TYPE_CHANGED, ({userType}) => {
+        dispatch(setUserType(userType))
+    });
+
+    /**
+     * User logout request rejected
+     * 
+     * @author [suleymansevimli](https://github.com/suleymansevimli)
+     */
+    authSocket.on(AUTH_EVENT_ENUMS.LOGOUT_REQUEST_REJECTED, () => {
+        localStorage.removeItem("token");
+        alert('Logout request rejected !')
     });
 
     /**
@@ -101,7 +124,7 @@ const AuthSocketListener = ({ dispatch, useAuth }) => {
      */
     authSocket.on(AUTH_EVENT_ENUMS.NEW_ROOM_CREATE_ACCEPTED, room => {
         dispatch(setIsRoomCreating(false));
-        dispatch(setJoinedRoom(room));
+        dispatch(setRoom(room));
     });
 
     /**
@@ -121,26 +144,8 @@ const AuthSocketListener = ({ dispatch, useAuth }) => {
      * 
      * @author [suleymansevimli](https://github.com/suleymansevimli)
      */
-    authSocket.on(AUTH_EVENT_ENUMS.GET_ALL_ROOMS, rooms => {
-        dispatch(setAllRooms(rooms));
-    });
-
-    /**
-     * Updated All Rooms
-     * 
-     * @author [suleymansevimli](https://github.com/suleymansevimli)
-     */
-    authSocket.on(AUTH_EVENT_ENUMS.UPDATED_ALL_ROOMS, rooms => {
-        dispatch(updateRoomList(rooms));
-    });
-
-    /**
-     * Room Join Request Accepted
-     * 
-     * @author [suleymansevimli](https://github.com/suleymansevimli)
-     */
-    authSocket.on(AUTH_EVENT_ENUMS.ROOM_JOIN_ACCEPTED, room => {
-        dispatch(setJoinedRoom(room));
+    authSocket.on(AUTH_EVENT_ENUMS.GET_ROOM, room => {
+        dispatch(setRoom(room));
     });
 
     /**
