@@ -2,11 +2,7 @@ import Layout from "../../components/layout/layout";
 import SelectBoard from "../../components/room/select-board";
 import TabMenu from "../../components/tab-menu/tab-menu";
 import UserCard from "../../components/user/user-card";
-import {
-    Flex,
-    Stack,
-    Box,
-} from "@chakra-ui/react";
+import { Flex, Stack, Box, Wrap, WrapItem, Avatar, Text } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { createTask } from "../../wrappers/planning/planning-emitter";
 import { tabs, TabPanels as TabPanelRoom } from "../../constants/room-constants";
@@ -14,8 +10,13 @@ import { useContext, useEffect } from "react";
 import { joinRoomRequest } from "../../wrappers/auth/auth-emitter";
 import { useParams } from "react-router-dom";
 import { authContext } from "../../hooks/useAuth";
-import { setActiveTab, setIsVoting, setVotingTask } from "../../redux/slices/planning-slice";
-import { setIsRoomOwner } from "../../redux/slices/user-management-slice";
+import { setActiveTab, setIsVoting, setCurrentTask, toggleDetailModal } from "../../redux/slices/planning-slice";
+import SPModal from "../../components/modal/sp-modal";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Pie } from 'react-chartjs-2';
+import { generatePieChartData } from "../../utils/chart-util";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 /**
  * Scrum room
@@ -33,8 +34,10 @@ const Room = () => {
     const dispatch = useDispatch();
 
     // redux
-    const { isRoomCreating, room, isRoomOwner, users, loginedUser } = useSelector(state => state.userManagementSlice);
-    const { tasks, isVoting, activeTab, userRatingList } = useSelector(state => state.planningSlice);
+    const { isRoomCreating, users, loginedUser } = useSelector(state => state.userManagementSlice);
+    const { tasks, isVoting, activeTab, detailModalIsOpen, detailModalData } = useSelector(state => state.planningSlice);
+
+    console.log('detailModalIsOpen', detailModalIsOpen, detailModalData)
 
     // route
     const { roomId } = useParams();
@@ -46,21 +49,14 @@ const Room = () => {
         }
     }, [isRoomCreating, authed, roomId]);
 
-    // set room owner
-    useEffect(() => {
-        if (room.roomOwner?.uniqueId === localStorage.getItem('token')) {
-            dispatch(setIsRoomOwner(true));
-        }
-    }, [room?.roomOwner?.uniqueId]);
-
     // when user re-enter room
     useEffect(() => {
         if (tasks.IN_PROGRESS.length > 0) {
             dispatch(setIsVoting(true))
             dispatch(setActiveTab("IN_PROGRESS"))
-            dispatch(setVotingTask(tasks.IN_PROGRESS[0]))
+            dispatch(setCurrentTask(tasks.IN_PROGRESS[0]))
         }
-    }, [JSON.stringify(tasks.IN_PROGRESS)])
+    }, [JSON.stringify(tasks.IN_PROGRESS)]);
 
     /**
      * Create Task Request
@@ -71,6 +67,18 @@ const Room = () => {
      * @returns void
      */
     const onSubmitCreateTask = (data) => createTask(data);
+
+
+    /**
+     *  ! ------------------------------- CHART -------------------------------------
+     */
+
+
+    /**
+     *  ! ------------------------------ CHART END ---------------------------------
+     */
+
+
 
     return (
         <Layout layoutStyles={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
@@ -116,18 +124,55 @@ const Room = () => {
 
                     <Stack>
                         {
-                            isVoting
-                                ? userRatingList.map(user => (
-                                    <UserCard user={user.user} key={user.userName} point={user.rating} />
-                                ))
-                                : users.map(user => (
-                                    <UserCard user={user} key={user.userName} point={"-"} />
-                                ))
+                            users.map(user => (
+                                <UserCard user={user} key={user.uniqueId} />
+                            ))
                         }
                     </Stack>
                 </Stack>
             </Flex>
-        </Layout>
+            <SPModal
+                isCentered
+                isOpen={detailModalIsOpen}
+                onClose={() => dispatch(toggleDetailModal({ isOpen: false }))}
+                size="full"
+                modalTitle={detailModalData?.taskName}>
+
+
+                <Box bg={'whiteAlpha.500'} color={"red.400"}>
+                    {detailModalData?.result?.averageVote}
+                </Box>
+
+                <Flex justifyContent={"center"} alignItems="center">
+                    <Box w="500px" h="500px">
+                        <Pie
+                            data={generatePieChartData({
+                                labels: Object.keys(detailModalData?.result?.votes ?? []),
+                                data: Object.values(detailModalData?.result?.votes ?? [])
+                            })}
+                        />
+                    </Box>
+                </Flex>
+
+                <Wrap display={"flex"} alignItems="center" justifyContent={"center"} mt="70">
+                    {detailModalData?.userVoteList?.map(({ user, vote }) => (
+                        <Flex justifyContent={"space-between"} borderRadius="16" p="50" alignItems="center" width={250} height={150} border="1px solid #ddd">
+                            <Stack>
+                                <Avatar name={user.userName} />
+                                <Box ml='3'>
+                                    <Text fontWeight='bold'>
+                                        {user.userName}
+                                    </Text>
+                                </Box>
+                            </Stack>
+                            <Text d="flex" alignItems={"center"} justifyContent="center" fontSize='xl' bg="tomato" padding={"5"} w="5" h="5" borderRadius="100%">
+                                {vote === 'coffee' ? '☕' : vote}
+                            </Text>
+                        </Flex>
+                    ))}
+                </Wrap>
+            </SPModal>
+        </Layout >
     );
 }
 

@@ -25,6 +25,7 @@ function useAuth() {
     logout() {
       return new Promise((res) => {
         logoutRequest({ uniqueId: localStorage.getItem("token") })
+        localStorage.removeItem('token');
         setAuthed(false);
         res();
       });

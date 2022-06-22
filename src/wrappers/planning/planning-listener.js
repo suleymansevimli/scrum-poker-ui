@@ -1,4 +1,4 @@
-import { setActiveTab, setAllTasks, setStartVoting, setStopVoting, setUserRatingList, setVotingTask } from "../../redux/slices/planning-slice";
+import { setActiveTab, setAllTasks, setStartVoting, setStopVoting, setUserVoteList, setCurrentTask, toggleDetailModal } from "../../redux/slices/planning-slice";
 import { planningSocket } from "../socket-connections";
 import { PLANNING_EVENT_TYPES } from "./planning-enums";
 
@@ -70,7 +70,8 @@ const PlanningSocketListener = ({ dispatch }) => {
      * @author [suleymansevimli](https://github.com/suleymansevimli)
      */
     planningSocket.on(PLANNING_EVENT_TYPES.STOP_VOTING_REQUEST_ACCEPTED, ({ task }) => {
-        dispatch(setStopVoting({ task }))
+        dispatch(setStopVoting({ task }));
+        dispatch(toggleDetailModal({ isOpen: true, task }))
     });
 
     /**
@@ -78,29 +79,19 @@ const PlanningSocketListener = ({ dispatch }) => {
      * 
      * @author [suleymansevimli](https://github.com/suleymansevimli)
      */
-    planningSocket.on(PLANNING_EVENT_TYPES.VOTE_REQUEST_ACCEPTED, ({ task, userRatingList }) => {
-        dispatch(setVotingTask(task))
-        dispatch(setUserRatingList(userRatingList))
+    planningSocket.on(PLANNING_EVENT_TYPES.VOTE_REQUEST_ACCEPTED, ({ task }) => {
+        // dispatch(setCurrentTask(task))
     });
-
-    /**
-     * GET ALL USER RATING LIST
-     * 
-     * @author [suleymansevimli](https://github.com/suleymansevimli)
-     */
-    planningSocket.on(PLANNING_EVENT_TYPES.GET_ALL_USER_RATING_LIST, ({ userRatingList }) => {
-        dispatch(setUserRatingList(userRatingList))
-    })
 
     /**
      * CURRENT USER VOTE LIST UPDATED
      * 
      * @author [suleymansevimli](https://github.com/suleymansevimli)
      */
-     planningSocket.on(PLANNING_EVENT_TYPES.CURRENT_USER_VOTE_LIST_UPDATED, ({ userRatingList }) => {
-        // TODO: UserVoteList alanı güncellenecek.s
+    planningSocket.on(PLANNING_EVENT_TYPES.CURRENT_USER_VOTE_LIST_UPDATED, ({ userVoteList }) => {
+        dispatch(setUserVoteList(userVoteList))
     })
-    
+
 }
 
 export default PlanningSocketListener;

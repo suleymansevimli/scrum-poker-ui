@@ -6,7 +6,6 @@ const initialState = {
   isRoomCreating: false,
   room: {},
   isJoiningRoom: false,
-  isRoomOwner: false,
 };
 
 export const userManagementSlice = createSlice({
@@ -27,15 +26,11 @@ export const userManagementSlice = createSlice({
     },
 
     setRoom: (state, action) => {
-      state.room = action.payload ?? {};
+      state.room = action.payload.room ? action.payload.room : {};
     },
 
     setIsRoomCreating: (state, action) => {
       state.isRoomCreating = action.payload;
-    },
-
-    setIsRoomOwner : (state, action) => {
-      state.isRoomOwner = action.payload;
     },
 
     setIsJoiningRoom: (state, action) => {
@@ -43,7 +38,10 @@ export const userManagementSlice = createSlice({
     },
 
     setUserDisconnected: (state, action) => {
-      const userIndex = state.users.findIndex(user => user.id === action.payload.uniqueId);
+      if(!(action.payload)){
+        return;
+      }
+      const userIndex = state.users.findIndex(user => user.id === action.payload.user.uniqueId);
       state.users[userIndex] = action.payload;
       state.users = [...state.users];
     },
@@ -67,7 +65,6 @@ export const {
   setIsJoiningRoom,
   setUserDisconnected,
   setClientId,
-  setIsRoomOwner,
   setUserType
 } = userManagementSlice.actions;
 

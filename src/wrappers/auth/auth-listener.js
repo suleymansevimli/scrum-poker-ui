@@ -113,7 +113,6 @@ const AuthSocketListener = ({ dispatch, useAuth }) => {
      * @author [suleymansevimli](https://github.com/suleymansevimli)
      */
     authSocket.on(AUTH_EVENT_ENUMS.LOGOUT_REQUEST_REJECTED, () => {
-        localStorage.removeItem("token");
         alert('Logout request rejected !')
     });
 

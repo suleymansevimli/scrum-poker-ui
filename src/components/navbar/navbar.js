@@ -45,7 +45,7 @@ const Navbar = () => {
                                 </Box>
                                 <Box>
                                     <Text onClick={handleLogout}>
-                                        Çıkış Yap
+                                        Logout
                                     </Text>
                                 </Box>
                             </Flex>

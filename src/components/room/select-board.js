@@ -20,16 +20,15 @@ const SelectBoard = ({ isRoomOwner, isVoting }) => {
     const [selectedNumber, setSelectedNumber] = useState(null);
 
     // redux
-    const { loginedUser, room } = useSelector(state => state.userManagementSlice);
-    const { votingTask } = useSelector(state => state.planningSlice);
+    const { loginedUser } = useSelector(state => state.userManagementSlice);
+    const { currentTask } = useSelector(state => state.planningSlice);
 
     // select after refresh page
     useEffect(() => {
-        console.log('voteTask', votingTask);
-        if (votingTask && loginedUser) {
-           setSelectedNumber(votingTask.userVoteList.find(rating => rating.user.uniqueId === loginedUser.uniqueId)?.rating);
+        if (currentTask && loginedUser) {
+           setSelectedNumber(currentTask?.userVoteList?.find(rating => rating.user.uniqueId === loginedUser.uniqueId)?.vote || null);
         }
-    }, [votingTask, loginedUser])
+    }, [currentTask, loginedUser])
 
     /***
      * Select story point 
@@ -44,7 +43,9 @@ const SelectBoard = ({ isRoomOwner, isVoting }) => {
             user: loginedUser,
             vote,
         }
-        voteTask(payload)
+        voteTask(payload);
+
+        setSelectedNumber(vote);
     }
 
     return (
