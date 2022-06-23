@@ -40,9 +40,7 @@ const Navbar = () => {
                                 <Box>
                                     <Link to="/">Main Page</Link>
                                 </Box>
-                                <Box>
-                                    <Link to="/room/1231">Room</Link>
-                                </Box>
+
                                 <Box>
                                     <Text onClick={handleLogout}>
                                         Logout
@@ -55,9 +53,6 @@ const Navbar = () => {
                             <Flex alignItems="center" gridGap="4">
                                 <Box>
                                     <Link to="/">Login</Link>
-                                </Box>
-                                <Box>
-                                    <Link to="/room/1231">Room</Link>
                                 </Box>
                             </Flex>
                         )

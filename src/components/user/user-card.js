@@ -38,8 +38,8 @@ const UserCard = ({ user = {} }) => {
                     <Text>
                         {user.userName}
                     </Text>
-                    <Badge ml='1' fontSize='1em' colorScheme={userPoint !== '-' ? 'green' : 'red' }>
-                        {userPoint !== '-' ? 'VOTED' : 'WAITING' }
+                    <Badge ml='1' fontSize='1em' colorScheme={user.userType === 'admin' ? 'twitter' : userPoint !== '-' ? 'green' : 'red' }>
+                        { user.userType === 'admin' ? 'ADMIN' : userPoint !== '-' ? 'VOTED' : 'WAITING' }
                     </Badge>
                 </Flex>
             </Box>

@@ -4,8 +4,9 @@ import SPModal from "../modal/sp-modal";
 import PropTypes from 'prop-types';
 import { startVoting, stopVoting } from "../../wrappers/planning/planning-emitter";
 import { useSelector } from "react-redux";
+import TaskContent from "../modal/task-content";
 
-const TaskCard = ({ taskName, taskDescription, taskId, status }) => {
+const TaskCard = ({ taskName, taskDescription, taskId, status, ...rest }) => {
 
     const { isVoting } = useSelector(state => state.planningSlice);
     const { loginedUser } = useSelector(state => state.userManagementSlice);
@@ -78,7 +79,7 @@ const TaskCard = ({ taskName, taskDescription, taskId, status }) => {
                 onClose={() => setIsOpen(false)}
                 size="full"
                 modalTitle={taskName}>
-                <Text>{taskDescription}</Text>
+                <TaskContent taskDetail={{...rest,taskName, taskDescription}} />
             </SPModal>
 
         </Box>

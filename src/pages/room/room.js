@@ -2,7 +2,7 @@ import Layout from "../../components/layout/layout";
 import SelectBoard from "../../components/room/select-board";
 import TabMenu from "../../components/tab-menu/tab-menu";
 import UserCard from "../../components/user/user-card";
-import { Flex, Stack, Box, Wrap, WrapItem, Avatar, Text } from "@chakra-ui/react";
+import { Flex, Stack, Box } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { createTask } from "../../wrappers/planning/planning-emitter";
 import { tabs, TabPanels as TabPanelRoom } from "../../constants/room-constants";
@@ -12,11 +12,8 @@ import { useParams } from "react-router-dom";
 import { authContext } from "../../hooks/useAuth";
 import { setActiveTab, setIsVoting, setCurrentTask, toggleDetailModal } from "../../redux/slices/planning-slice";
 import SPModal from "../../components/modal/sp-modal";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Pie } from 'react-chartjs-2';
-import { generatePieChartData } from "../../utils/chart-util";
+import TaskContent from "../../components/modal/task-content";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
 
 /**
  * Scrum room
@@ -36,8 +33,6 @@ const Room = () => {
     // redux
     const { isRoomCreating, users, loginedUser } = useSelector(state => state.userManagementSlice);
     const { tasks, isVoting, activeTab, detailModalIsOpen, detailModalData } = useSelector(state => state.planningSlice);
-
-    console.log('detailModalIsOpen', detailModalIsOpen, detailModalData)
 
     // route
     const { roomId } = useParams();
@@ -67,18 +62,6 @@ const Room = () => {
      * @returns void
      */
     const onSubmitCreateTask = (data) => createTask(data);
-
-
-    /**
-     *  ! ------------------------------- CHART -------------------------------------
-     */
-
-
-    /**
-     *  ! ------------------------------ CHART END ---------------------------------
-     */
-
-
 
     return (
         <Layout layoutStyles={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
@@ -137,40 +120,7 @@ const Room = () => {
                 onClose={() => dispatch(toggleDetailModal({ isOpen: false }))}
                 size="full"
                 modalTitle={detailModalData?.taskName}>
-
-
-                <Box bg={'whiteAlpha.500'} color={"red.400"}>
-                    {detailModalData?.result?.averageVote}
-                </Box>
-
-                <Flex justifyContent={"center"} alignItems="center">
-                    <Box w="500px" h="500px">
-                        <Pie
-                            data={generatePieChartData({
-                                labels: Object.keys(detailModalData?.result?.votes ?? []),
-                                data: Object.values(detailModalData?.result?.votes ?? [])
-                            })}
-                        />
-                    </Box>
-                </Flex>
-
-                <Wrap display={"flex"} alignItems="center" justifyContent={"center"} mt="70">
-                    {detailModalData?.userVoteList?.map(({ user, vote }) => (
-                        <Flex justifyContent={"space-between"} borderRadius="16" p="50" alignItems="center" width={250} height={150} border="1px solid #ddd">
-                            <Stack>
-                                <Avatar name={user.userName} />
-                                <Box ml='3'>
-                                    <Text fontWeight='bold'>
-                                        {user.userName}
-                                    </Text>
-                                </Box>
-                            </Stack>
-                            <Text d="flex" alignItems={"center"} justifyContent="center" fontSize='xl' bg="tomato" padding={"5"} w="5" h="5" borderRadius="100%">
-                                {vote === 'coffee' ? '☕' : vote}
-                            </Text>
-                        </Flex>
-                    ))}
-                </Wrap>
+                    <TaskContent taskDetail={detailModalData} />
             </SPModal>
         </Layout >
     );

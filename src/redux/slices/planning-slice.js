@@ -63,6 +63,9 @@ export const planningSlice = createSlice({
         },
 
         setUserVoteList: (state, { payload }) => {
+            /**
+             * !Bu alanda bir problem var
+             */
             state.currentTask.userVoteList = payload;
         },
 
