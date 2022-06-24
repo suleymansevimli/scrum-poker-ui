@@ -38,6 +38,15 @@ const MainPage = () => {
     <Layout layoutStyles={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
       <Box display={'flex'} gridGap={10} flexDirection='column' alignItems={'center'} justifyContent={'center'} width={"100%"} >
 
+
+      {Object.keys(room).length > 1 &&
+            (
+              <Box border={'1px solid orange'} padding={15} borderRadius={8}>
+                <Text color={"white"}> Odaya giriş yapabilirsiniz. </Text>
+              </Box>
+            )
+          }
+
         <Box d="grid" placeItems={"center"} gridTemplateColumns={"auto"} gridGap={15}>
           {
             Object.keys(room).length > 0 && (
@@ -54,7 +63,7 @@ const MainPage = () => {
                 _hover={{ height: '170px', width: '170px' }}
                 alignItems={'center'}
                 justifyContent={'center'}>
-                <Text>{room.slug}</Text>
+                <Text>{room.roomName}</Text>
               </Box>
             )
           }
@@ -66,27 +75,11 @@ const MainPage = () => {
           flexDirection="column"
           alignItems="center"
           justifyContent={'center'} >
-          {Object.keys(room).length === 1 &&
-            (
-              <Box border={'1px solid orange'} padding={15} borderRadius={8}>
-                <Text color={"white"}> Sadece bir tane oda oluşturulabilir. Oluşturulan odaya giriş yapabilirsiniz. </Text>
-              </Box>
-            )
-          }
-
-          <ul>
-             {
-               users.map(user => {
-                  return (
-                    <li key={user.id}>
-                      <Text>{user.userName} - {user.livelinessStatus} - {user.userType}</Text>
-                    </li>
-                  )
-               })
-             }
-          </ul>
-          <Input placeholder="Room Name" disabled={Object.keys(room).length} value={roomName} onChange={e => setRoomName(e.target.value)} />
-          <Button disabled={Object.keys(room).length} onClick={joinRoom}>Oluştur</Button>
+          
+          <Input placeholder="Enter a room name here..." disabled={Object.keys(room).length} value={roomName} onChange={e => setRoomName(e.target.value)} />
+          <Button disabled={Object.keys(room).length || !(roomName.length)} onClick={joinRoom}>
+            Create Room
+          </Button>
         </Box>
       </Box>
     </Layout >

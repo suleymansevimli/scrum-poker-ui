@@ -59,7 +59,7 @@ const CreateTaskForm = ({ onSubmit }) => {
                     <Field name='description'>
                         {({ field, form }) => (
                             <FormControl mt={5} isInvalid={form.errors.description && form.touched.description}>
-                                <FormLabel htmlFor='description'>Task Name</FormLabel>
+                                <FormLabel htmlFor='description'>Description</FormLabel>
                                 <Textarea {...field} id='description' placeholder='description' />
                                 <FormErrorMessage>{form.errors.description}</FormErrorMessage>
                             </FormControl>

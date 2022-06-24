@@ -75,11 +75,12 @@ const Room = () => {
                     justifyContent={"space-between"}
                     display={"flex"}
                     alignItems={"center"}
-                    flex={4}
-                    borderRight={"1px solid #ddd"}>
+                    flex={4}>
 
                     <Box display={"flex"} flexDirection={"column"} gridGap={10}>
+                        
                         <SelectBoard isVoting={isVoting} isRoomOwner={loginedUser.userType === 'admin'} />
+                        
                         <Box flex={1} width={"100%"}  >
                             <TabMenu
                                 currentTab={activeTab}
@@ -118,7 +119,7 @@ const Room = () => {
                 isCentered
                 isOpen={detailModalIsOpen}
                 onClose={() => dispatch(toggleDetailModal({ isOpen: false }))}
-                size="full"
+                size="6xl"
                 modalTitle={detailModalData?.taskName}>
                     <TaskContent taskDetail={detailModalData} />
             </SPModal>

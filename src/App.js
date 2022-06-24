@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useLayoutEffect } from 'react';
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import Login from './pages/login/login';
@@ -26,6 +26,12 @@ const theme = extendTheme(config);
  * @returns {React.ReactElement}
  */
 export default function App() {
+
+  useLayoutEffect(() => {
+    if(!(localStorage.getItem('chakra-ui-color-mode'))) {
+      localStorage.setItem('chakra-ui-color-mode', 'dark')
+    }
+  }, [])
 
   const { authed } = useContext(authContext);
 

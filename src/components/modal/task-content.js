@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex, Stack, Wrap, Text } from "@chakra-ui/react"
+import { Avatar, Box, Flex, Stack, Text } from "@chakra-ui/react"
 import { generatePieChartData } from "../../utils/chart-util"
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
@@ -9,12 +9,11 @@ const TaskContent = ({ taskDetail = {} }) => {
 
     return (
         <>
-
             <Box>
                 {taskDetail.taskDescription}
             </Box>
 
-            <Text fontSize={54} textAlign={"center"}>
+            <Text fontSize={54} textAlign={"center"} display={taskDetail.hasOwnProperty('result') ? 'block': 'none' }>
                 <Text>Average Point</Text>
                 <Text color={"yellow.400"}>{taskDetail?.result?.averageVote}</Text>
             </Text>

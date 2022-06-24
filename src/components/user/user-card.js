@@ -1,22 +1,22 @@
 import { memo, useEffect, useState } from "react";
-import { Box, Flex, Badge, Text, Tooltip } from "@chakra-ui/react";
+import { Box, Flex, Badge, Text, Tooltip, Avatar } from "@chakra-ui/react";
 import PropTypes from 'prop-types';
 import { LIVELINESS_STATUS_ENUMS } from "../../wrappers/auth/auth-enums";
 import { useSelector } from "react-redux";
 
 const UserCard = ({ user = {} }) => {
 
-    const [userPoint, setUserPoint] = useState('-'); 
+    const [userPoint, setUserPoint] = useState('-');
     const { currentTask } = useSelector((state) => state.planningSlice)
 
     useEffect(() => {
-        if(currentTask?.userVoteList) {
+        if (currentTask?.userVoteList) {
             setUserPoint(prev => {
                 const userIndex = currentTask.userVoteList.findIndex(voteList => user.uniqueId === voteList.user.uniqueId);
-                if(userIndex !== -1) {
+                if (userIndex !== -1) {
                     prev = currentTask.userVoteList[userIndex].vote;
                     return prev;
-                }  
+                }
                 return '-'
             })
         }
@@ -34,12 +34,15 @@ const UserCard = ({ user = {} }) => {
                 transition={"all 0.3s ease-in-out"}
                 cursor={"pointer"}
                 _hover={{ borderColor: "twitter.600" }}>
-                <Flex justifyContent={"space-between"} padding={"15px 30px"} w="100%">
-                    <Text>
-                        {user.userName}
-                    </Text>
-                    <Badge ml='1' fontSize='1em' colorScheme={user.userType === 'admin' ? 'twitter' : userPoint !== '-' ? 'green' : 'red' }>
-                        { user.userType === 'admin' ? 'ADMIN' : userPoint !== '-' ? 'VOTED' : 'WAITING' }
+                <Flex justifyContent={"space-between"} alignItems="center" padding={"15px 30px"} w="100%">
+                    <Flex alignItems={"center"} gridGap="10px">
+                        <Avatar name={user.userName} />
+                        <Text>
+                            {user.userName}
+                        </Text>
+                    </Flex>
+                    <Badge maxHeight="30px" ml='1' fontSize='1em' colorScheme={user.userType === 'admin' ? 'twitter' : userPoint !== '-' ? 'green' : 'red'}>
+                        {user.userType === 'admin' ? 'ADMIN' : userPoint !== '-' ? 'VOTED' : 'WAITING'}
                     </Badge>
                 </Flex>
             </Box>

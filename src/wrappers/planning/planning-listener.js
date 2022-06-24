@@ -1,4 +1,4 @@
-import { setActiveTab, setAllTasks, setStartVoting, setStopVoting, setUserVoteList, toggleDetailModal } from "../../redux/slices/planning-slice";
+import { setActiveTab, setAllTasks, setStartVoting, setCurrentTask, setUserVoteList, toggleDetailModal, setStopVoting } from "../../redux/slices/planning-slice";
 import { planningSocket } from "../socket-connections";
 import { PLANNING_EVENT_TYPES } from "./planning-enums";
 
@@ -70,7 +70,8 @@ const PlanningSocketListener = ({ dispatch }) => {
      * @author [suleymansevimli](https://github.com/suleymansevimli)
      */
     planningSocket.on(PLANNING_EVENT_TYPES.STOP_VOTING_REQUEST_ACCEPTED, ({ task }) => {
-        // dispatch(setStopVoting({ task }));
+        dispatch(setStopVoting({ task }));
+        dispatch(setCurrentTask(null))
         dispatch(toggleDetailModal({ isOpen: true, task }))
     });
 

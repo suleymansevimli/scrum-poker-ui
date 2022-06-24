@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { authContext } from '../../hooks/useAuth';
 import { Flex, Box, Text } from "@chakra-ui/react";
 import { useSelector } from 'react-redux';
@@ -12,12 +12,9 @@ import './navbar.css';
  * @returns {JSX.Element}
  */
 const Navbar = () => {
-
+    
     // hooks
     const { authed, logout } = useContext(authContext);
-
-    // route
-    const navigate = useNavigate();
 
     // redux
     const { loginedUser } = useSelector(state => state.userManagementSlice);
@@ -42,7 +39,7 @@ const Navbar = () => {
                                 </Box>
 
                                 <Box>
-                                    <Text onClick={handleLogout}>
+                                    <Text cursor={"pointer"} onClick={handleLogout}>
                                         Logout
                                     </Text>
                                 </Box>

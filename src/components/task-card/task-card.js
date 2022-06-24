@@ -77,9 +77,9 @@ const TaskCard = ({ taskName, taskDescription, taskId, status, ...rest }) => {
                 isCentered
                 isOpen={isOpen}
                 onClose={() => setIsOpen(false)}
-                size="full"
+                size="6xl"
                 modalTitle={taskName}>
-                <TaskContent taskDetail={{...rest,taskName, taskDescription}} />
+                <TaskContent taskDetail={{ ...rest, taskName, taskDescription }} />
             </SPModal>
 
         </Box>

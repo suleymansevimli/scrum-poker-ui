@@ -54,12 +54,6 @@ export const planningSlice = createSlice({
 
         setStopVoting: (state, { payload }) => {
             state.isVoting = false
-
-            state.tasks.IN_PROGRESS = state.tasks.IN_PROGRESS.filter(task => task.id !== payload.task.id)
-            state.tasks.DONE = [...state.tasks.DONE, payload.task];
-
-            state.currentTask = {};
-            state.lastVotedTask = payload.task;
         },
 
         setUserVoteList: (state, { payload }) => {
